@@ -1,9 +1,12 @@
 package com.subhrajyoti.wallify;
 
 import android.app.WallpaperManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.afollestad.appthemeengine.ATEActivity;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mobmead.easympermission.Permission;
 import com.mobmead.easympermission.RuntimePermission;
@@ -32,7 +36,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 @RuntimePermission
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseThemeActivity {
 
     @Bind(R.id.randomFab)
     FloatingActionButton randomFab;
@@ -42,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView;
     MaterialDialog materialDialog;
     Bitmap bitmap;
+    MaterialDialog.Builder builder;
+    boolean grayscale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        builder = new MaterialDialog.Builder(this)
+                .progress(true, 0);//cancelable(false);
 
         ButterKnife.bind(this);
         loadImage();
@@ -65,25 +75,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_save) {
-            saveImage();
+        switch (id){
+            case R.id.action_save : saveImage();
+                break;
+            case R.id.settings:
+                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -91,15 +104,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadImage() {
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
-                .content("Loading Image").progress(true, 0);
+        builder.content("Loading Image");
 
         materialDialog = builder.build();
         materialDialog.show();
+        String string;
+        grayscale = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("grayscale",false);
+        if (!grayscale)
+            string = "https://unsplash.it/1920/1080/?random";
+        else
+            string = "https://unsplash.it/g/1920/1080/?random";
 
 
         Picasso.with(this)
-                .load("https://unsplash.it/1920/1080/?random")
+                .load(string)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .into(imageView, new Callback() {
@@ -117,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Permission({"android.permission.WRITE_EXTERNAL_STORAGE"})
     public void saveImage() {
+        imageView.destroyDrawingCache();
         imageView.buildDrawingCache();
         bitmap = imageView.getDrawingCache();
 
@@ -146,20 +165,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setWallpaper() {
+        imageView.destroyDrawingCache();
         imageView.buildDrawingCache();
         bitmap = imageView.getDrawingCache();
-
 
         WallpaperManager myWallpaperManager
                 = WallpaperManager.getInstance(getApplicationContext());
         try {
             myWallpaperManager.setBitmap(bitmap);
             Toast.makeText(MainActivity.this, "Wallpaper Set", Toast.LENGTH_SHORT).show();
+            materialDialog.dismiss();
         } catch (IOException e) {
 
             e.printStackTrace();
         }
-
-
     }
+
 }

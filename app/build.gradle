@@ -40,6 +40,9 @@ dependencies {
     }
     provided 'com.mobmead:easympermission:1.0.0'
     provided 'org.glassfish:javax.annotation:10.0-b28'
+    compile('com.github.afollestad:app-theme-engine:1.0.0@aar') {
+        transitive = true
+    }
 
 
 }
