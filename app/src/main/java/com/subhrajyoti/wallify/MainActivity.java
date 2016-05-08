@@ -1,25 +1,27 @@
 package com.subhrajyoti.wallify;
 
+import android.Manifest;
 import android.app.WallpaperManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.afollestad.appthemeengine.ATEActivity;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.mobmead.easympermission.Permission;
-import com.mobmead.easympermission.RuntimePermission;
+import com.afollestad.appthemeengine.ATE;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -35,7 +37,6 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-@RuntimePermission
 public class MainActivity extends BaseThemeActivity {
 
     @Bind(R.id.randomFab)
@@ -44,23 +45,37 @@ public class MainActivity extends BaseThemeActivity {
     FloatingActionButton setFab;
     @Bind(R.id.imageView)
     ImageView imageView;
-    MaterialDialog materialDialog;
+    @Bind(R.id.progressBar)
+    ProgressBar progressBar;
     Bitmap bitmap;
-    MaterialDialog.Builder builder;
     boolean grayscale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (!ATE.config(this, "light_theme").isConfigured(4)) {
+            ATE.config(this, "light_theme")
+                    .activityTheme(R.style.AppTheme)
+                    .primaryColorRes(R.color.colorPrimaryLightDefault)
+                    .accentColorRes(R.color.colorAccentLightDefault)
+                    .coloredActionBar(true)
+                    .commit();
+        }
+        if (!ATE.config(this, "dark_theme").isConfigured(4)) {
+            ATE.config(this, "dark_theme")
+                    .activityTheme(R.style.AppThemeDark)
+                    .primaryColorRes(R.color.colorPrimaryDarkDefault)
+                    .accentColorRes(R.color.colorAccentDarkDefault)
+                    .coloredActionBar(true)
+                    .commit();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        builder = new MaterialDialog.Builder(this)
-                .progress(true, 0);//cancelable(false);
-
         ButterKnife.bind(this);
+        if ((savedInstanceState==null))
         loadImage();
         randomFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +89,6 @@ public class MainActivity extends BaseThemeActivity {
                 setWallpaper();
             }
         });
-
 
 
     }
@@ -91,11 +105,12 @@ public class MainActivity extends BaseThemeActivity {
 
         int id = item.getItemId();
 
-        switch (id){
-            case R.id.action_save : saveImage();
+        switch (id) {
+            case R.id.action_save:
+                saveImage();
                 break;
             case R.id.settings:
-                startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
         }
 
@@ -104,18 +119,13 @@ public class MainActivity extends BaseThemeActivity {
 
     public void loadImage() {
 
-        builder.content("Loading Image");
-
-        materialDialog = builder.build();
-        materialDialog.show();
+        progressBar.setVisibility(View.VISIBLE);
         String string;
-        grayscale = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("grayscale",false);
+        grayscale = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("grayscale", false);
         if (!grayscale)
             string = "https://unsplash.it/1920/1080/?random";
         else
             string = "https://unsplash.it/g/1920/1080/?random";
-
-
         Picasso.with(this)
                 .load(string)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -123,7 +133,8 @@ public class MainActivity extends BaseThemeActivity {
                 .into(imageView, new Callback() {
                     @Override
                     public void onSuccess() {
-                        materialDialog.dismiss();
+                        //materialDialog.dismiss();
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -133,52 +144,100 @@ public class MainActivity extends BaseThemeActivity {
                 });
     }
 
-    @Permission({"android.permission.WRITE_EXTERNAL_STORAGE"})
     public void saveImage() {
-        imageView.destroyDrawingCache();
-        imageView.buildDrawingCache();
-        bitmap = imageView.getDrawingCache();
+        getPermissions();
+        generateCache();
+        SaveWallpaperTask saveTask = new SaveWallpaperTask();
+        saveTask.execute(bitmap);
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-        Date now = new Date();
-
-        OutputStream fOut = null;
-        try {
-            File root = new File(Environment.getExternalStorageDirectory()
-                    + File.separator + "Wallify" + File.separator);
-            root.mkdirs();
-            File sdImageMainDirectory = new File(root, formatter.format(now) + ".jpg");
-            fOut = new FileOutputStream(sdImageMainDirectory);
-        } catch (Exception e) {
-            Toast.makeText(this, "Error occured. Please try again later.",
-                    Toast.LENGTH_SHORT).show();
-        }
-
-        try {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-            assert fOut != null;
-            fOut.flush();
-            fOut.close();
-            Toast.makeText(MainActivity.this, "Wallpaper Saved", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-        }
     }
 
     public void setWallpaper() {
+
+        generateCache();
+        SetWallpaperTask setWallpaper = new SetWallpaperTask();
+        setWallpaper.execute(bitmap);
+    }
+
+    public class SetWallpaperTask extends AsyncTask<Bitmap, Void,
+            Void> {
+
+        @Override
+        protected Void doInBackground(Bitmap... params) {
+            final Bitmap bitmap = params[0];
+            WallpaperManager myWallpaperManager
+                    = WallpaperManager.getInstance(getApplicationContext());
+            try {
+                myWallpaperManager.setBitmap(bitmap);
+                Toast.makeText(getApplicationContext(), "Wallpaper Set", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+    }
+
+    private void getPermissions(){
+
+        int storagePermission;
+        String permission = "TAG";
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            storagePermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            if( storagePermission != PackageManager.PERMISSION_GRANTED ) {
+                permission =  Manifest.permission.WRITE_EXTERNAL_STORAGE ;
+            }
+            if( !permission.equals("TAG")) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        12);
+            }
+        }
+    }
+
+    public class SaveWallpaperTask extends AsyncTask<Bitmap, Void,
+            Void> {
+
+        @Override
+        protected Void doInBackground(Bitmap... params) {
+            final Bitmap bitmap = params[0];
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+            Date now = new Date();
+
+            OutputStream fOut = null;
+            try {
+                File root = new File(Environment.getExternalStorageDirectory()
+                        + File.separator + "Wallify" + File.separator);
+                root.mkdirs();
+                File sdImageMainDirectory = new File(root, formatter.format(now) + ".jpg");
+                fOut = new FileOutputStream(sdImageMainDirectory);
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Error occured. Please try again later.",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            try {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                assert fOut != null;
+                fOut.flush();
+                fOut.close();
+                Toast.makeText(MainActivity.this, "Wallpaper Saved", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+    }
+
+    private void generateCache(){
         imageView.destroyDrawingCache();
         imageView.buildDrawingCache();
         bitmap = imageView.getDrawingCache();
-
-        WallpaperManager myWallpaperManager
-                = WallpaperManager.getInstance(getApplicationContext());
-        try {
-            myWallpaperManager.setBitmap(bitmap);
-            Toast.makeText(MainActivity.this, "Wallpaper Set", Toast.LENGTH_SHORT).show();
-            materialDialog.dismiss();
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
     }
 
 }

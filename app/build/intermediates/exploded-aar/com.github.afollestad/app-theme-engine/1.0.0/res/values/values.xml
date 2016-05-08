@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ate_button_disabled_dark">#1F000000</color>
+    <color name="ate_button_disabled_light">#1F000000</color>
+    <color name="ate_button_text_disabled_dark">#4DFFFFFF</color>
+    <color name="ate_button_text_disabled_light">#43000000</color>
+    <color name="ate_control_disabled_dark">#4DFFFFFF</color>
+    <color name="ate_control_disabled_light">#43000000</color>
+    <color name="ate_control_normal_dark">#B3FFFFFF</color>
+    <color name="ate_control_normal_light">#8A000000</color>
+    <color name="ate_icon_dark">#B3FFFFFF</color>
+    <color name="ate_icon_light">#8A000000</color>
+    <color name="ate_navigation_drawer_selected_dark">#202020</color>
+    <color name="ate_navigation_drawer_selected_light">#E8E8E8</color>
+    <color name="ate_primary_text_dark">#FFFFFFFF</color>
+    <color name="ate_primary_text_light">#DE000000</color>
+    <color name="ate_secondary_text_dark">#B3FFFFFF</color>
+    <color name="ate_secondary_text_light">#8A000000</color>
+    <color name="ate_switch_thumb_disabled_dark">#FF424242</color>
+    <color name="ate_switch_thumb_disabled_light">#FFBDBDBD</color>
+    <color name="ate_switch_thumb_normal_dark">#FFBDBDBD</color>
+    <color name="ate_switch_thumb_normal_light">#FFFAFAFA</color>
+    <color name="ate_switch_track_disabled_dark">#1AFFFFFF</color>
+    <color name="ate_switch_track_disabled_light">#1F000000</color>
+    <color name="ate_switch_track_normal_dark">#4DFFFFFF</color>
+    <color name="ate_switch_track_normal_light">#43000000</color>
+    <color name="ate_text_disabled_dark">#4DFFFFFF</color>
+    <color name="ate_text_disabled_light">#61000000</color>
+    <declare-styleable name="ATECheckBoxPreference"><attr format="string" name="ateKey_pref_checkBox"/></declare-styleable>
+    <declare-styleable name="ATEColorPreference"><attr format="string" name="ateKey_pref_color"/></declare-styleable>
+    <declare-styleable name="ATEDialogPreference"><attr format="string" name="ateKey_pref_dialog"/></declare-styleable>
+    <declare-styleable name="ATEEditTextPreference"><attr format="string" name="ateKey_pref_editText"/></declare-styleable>
+    <declare-styleable name="ATEListPreference"><attr format="string" name="ateKey_pref_list"/></declare-styleable>
+    <declare-styleable name="ATEMultiSelectPreference"><attr format="string" name="ateKey_pref_multiSelect"/></declare-styleable>
+    <declare-styleable name="ATEPreference"><attr format="string" name="ateKey_pref"/></declare-styleable>
+    <declare-styleable name="ATEPreferenceCategory"><attr format="string" name="ateKey_prefCategory_textColor"/></declare-styleable>
+    <declare-styleable name="ATESwitchPreference"><attr format="string" name="ateKey_pref_switch"/></declare-styleable>
+    <dimen name="ate_circleview_border">1dp</dimen>
+    <dimen name="ate_default_textsize_body">14sp</dimen>
+    <dimen name="ate_default_textsize_caption">12sp</dimen>
+    <dimen name="ate_default_textsize_display1">34sp</dimen>
+    <dimen name="ate_default_textsize_display2">45sp</dimen>
+    <dimen name="ate_default_textsize_display3">56sp</dimen>
+    <dimen name="ate_default_textsize_display4">112sp</dimen>
+    <dimen name="ate_default_textsize_headline">24sp</dimen>
+    <dimen name="ate_default_textsize_subheading">16sp</dimen>
+    <dimen name="ate_default_textsize_title">20sp</dimen>
+    <dimen name="ate_preference_inset">16dp</dimen>
+</resources>
