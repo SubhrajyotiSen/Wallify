@@ -32,6 +32,21 @@
         <activity
             android:name="com.subhrajyoti.wallify.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <receiver
+            android:name="com.subhrajyoti.wallify.MyReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.WALLPAPER_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.subhrajyoti.wallify.MyService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

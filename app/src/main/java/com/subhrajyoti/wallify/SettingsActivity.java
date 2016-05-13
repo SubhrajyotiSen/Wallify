@@ -8,13 +8,18 @@ import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
+
 import com.afollestad.appthemeengine.ATE;
 import com.afollestad.appthemeengine.Config;
 import com.afollestad.appthemeengine.prefs.ATEColorPreference;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 
+import butterknife.Bind;
+
 public class SettingsActivity extends BaseThemeActivity implements ColorChooserDialog.ColorCallback{
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

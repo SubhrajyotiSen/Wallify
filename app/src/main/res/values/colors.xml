@@ -6,7 +6,9 @@
 
     <color name="colorPrimaryLightDefault">#3F51B5</color>
     <color name="colorAccentLightDefault">#3F51B5</color>
+    <color name="colorBackgroundLight">#FFFFFF</color>
 
     <color name="colorPrimaryDarkDefault">#37474F</color>
     <color name="colorAccentDarkDefault">#2196F3</color>
+    <color name="colorBackgroundDark">#000000</color>
 </resources>
