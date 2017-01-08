@@ -157,9 +157,14 @@ public class MainActivity extends CActivity {
                     = WallpaperManager.getInstance(getApplicationContext());
             try {
                 myWallpaperManager.setBitmap(bitmap);
-                Toast.makeText(getApplicationContext(), "Wallpaper Set", Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Wallpaper Set", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -196,7 +201,13 @@ public class MainActivity extends CActivity {
                 assert fOut != null;
                 fOut.flush();
                 fOut.close();
-                Toast.makeText(MainActivity.this, "Wallpaper Saved", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Wallpaper Saved", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -239,7 +250,7 @@ public class MainActivity extends CActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.app_name))
                 .setMessage(R.string.no_permission)
-                .setPositiveButton("Ok", listener)
+                .setPositiveButton(getString(android.R.string.ok), listener)
                 .show();
     }
 
