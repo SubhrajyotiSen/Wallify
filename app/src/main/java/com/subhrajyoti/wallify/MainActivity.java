@@ -239,4 +239,9 @@ public class MainActivity extends CActivity {
         super.onBackPressed();
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        loadImage();
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }
