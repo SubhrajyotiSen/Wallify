@@ -113,9 +113,9 @@ public class MainActivity extends CActivity {
         String string;
         grayscale = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("grayscale", false);
         if (!grayscale)
-            string = "https://unsplash.it/1920/1080/?random";
+            string = getString(R.string.normal_link);
         else
-            string = "https://unsplash.it/g/1920/1080/?random";
+            string = getString(R.string.grayscale_link);
         Picasso.with(this)
                 .load(string)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -123,7 +123,6 @@ public class MainActivity extends CActivity {
                 .into(imageView, new Callback() {
                     @Override
                     public void onSuccess() {
-                        //materialDialog.dismiss();
                         progressBar.setVisibility(View.GONE);
                     }
 
@@ -136,16 +135,12 @@ public class MainActivity extends CActivity {
 
     public void saveImage() {
         generateCache();
-        SaveWallpaperTask saveTask = new SaveWallpaperTask();
-        saveTask.execute(bitmap);
-
+        new SaveWallpaperTask().execute(bitmap);
     }
 
     public void setWallpaper() {
-
         generateCache();
-        SetWallpaperTask setWallpaper = new SetWallpaperTask();
-        setWallpaper.execute(bitmap);
+        new SetWallpaperTask().execute(bitmap);
     }
 
     public class SetWallpaperTask extends AsyncTask<Bitmap, Void,Void> {
@@ -187,12 +182,12 @@ public class MainActivity extends CActivity {
             OutputStream fOut = null;
             try {
                 File root = new File(Environment.getExternalStorageDirectory()
-                        + File.separator + "Wallify" + File.separator);
+                        + File.separator + getString(R.string.app_name) + File.separator);
                 root.mkdirs();
                 File sdImageMainDirectory = new File(root, formatter.format(now) + ".jpg");
                 fOut = new FileOutputStream(sdImageMainDirectory);
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Error occured. Please try again later.",
+                Toast.makeText(getApplicationContext(), "Error occurred. Please try again later.",
                         Toast.LENGTH_SHORT).show();
             }
 
