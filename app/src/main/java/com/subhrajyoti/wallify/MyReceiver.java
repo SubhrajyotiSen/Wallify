@@ -14,7 +14,7 @@ public class MyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.v(TAG, "receiver");
+        Log.v(TAG, "receiver  called");
         Intent intent1 = new Intent(context,MyService.class);
         context.startService(intent1);
     }

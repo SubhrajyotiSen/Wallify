@@ -1,7 +1,6 @@
 package com.subhrajyoti.wallify;
 
 import android.Manifest;
-import android.app.WallpaperManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,11 +30,11 @@ import org.polaric.colorful.CActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -77,7 +76,12 @@ public class MainActivity extends CActivity {
         setFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setWallpaper();
+                try {
+                    setWallpaper();
+                } catch (ExecutionException | InterruptedException e) {
+                    Toast.makeText(MainActivity.this, R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -139,40 +143,15 @@ public class MainActivity extends CActivity {
         new SaveWallpaperTask().execute(bitmap);
     }
 
-    public void setWallpaper() {
+    public void setWallpaper() throws ExecutionException, InterruptedException {
         generateCache();
-        new SetWallpaperTask().execute(bitmap);
+        boolean status = new SetWallpaperTask().execute(bitmap).get();
+        if (status)
+            Toast.makeText(this, R.string.wallpaper_set_success, Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this, R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
     }
 
-    public class SetWallpaperTask extends AsyncTask<Bitmap, Void,Void> {
-
-        @Override
-        protected Void doInBackground(Bitmap... params) {
-            boolean status = true;
-            final Bitmap bitmap = params[0];
-            WallpaperManager myWallpaperManager
-                    = WallpaperManager.getInstance(getApplicationContext());
-            try {
-                myWallpaperManager.setBitmap(bitmap);
-            } catch (IOException e) {
-                status = false;
-                e.printStackTrace();
-            }
-            finally {
-                final boolean finalStatus = status;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (finalStatus)
-                            Toast.makeText(getApplicationContext(), R.string.wallpaper_set_success, Toast.LENGTH_SHORT).show();
-                        else
-                            Toast.makeText(getApplicationContext(), R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-            return null;
-        }
-    }
 
 
 

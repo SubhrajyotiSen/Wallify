@@ -12,4 +12,5 @@
     <string name="wallpaper_save_success">Wallpaper Saved</string>
     <string name="wallpaper_set_error">Error while setting wallpaper</string>
     <string name="wallpaper_set_success">Wallpaper set successfully</string>
+    <string name="settings">Settings</string>
 </resources>
