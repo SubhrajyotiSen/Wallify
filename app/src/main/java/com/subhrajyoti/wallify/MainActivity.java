@@ -2,17 +2,18 @@ package com.subhrajyoti.wallify;
 
 import android.Manifest;
 import android.app.WallpaperManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +51,7 @@ public class MainActivity extends CActivity {
     ProgressBar progressBar;
     Bitmap bitmap;
     boolean grayscale;
+    final private int REQUEST_STORAGE_PERM = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,9 @@ public class MainActivity extends CActivity {
         setSupportActionBar(toolbar);
 
         ButterKnife.bind(this);
+
+        if (!isStorageGranted())
+            requestPermission();
         if ((savedInstanceState==null))
         loadImage();
         randomFab.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +135,6 @@ public class MainActivity extends CActivity {
     }
 
     public void saveImage() {
-        getPermissions();
         generateCache();
         SaveWallpaperTask saveTask = new SaveWallpaperTask();
         saveTask.execute(bitmap);
@@ -144,8 +148,7 @@ public class MainActivity extends CActivity {
         setWallpaper.execute(bitmap);
     }
 
-    public class SetWallpaperTask extends AsyncTask<Bitmap, Void,
-            Void> {
+    public class SetWallpaperTask extends AsyncTask<Bitmap, Void,Void> {
 
         @Override
         protected Void doInBackground(Bitmap... params) {
@@ -165,24 +168,7 @@ public class MainActivity extends CActivity {
 
     }
 
-    private void getPermissions(){
 
-        int storagePermission;
-        String permission = "TAG";
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            storagePermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-            if( storagePermission != PackageManager.PERMISSION_GRANTED ) {
-                permission =  Manifest.permission.WRITE_EXTERNAL_STORAGE ;
-            }
-            if( !permission.equals("TAG")) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        12);
-            }
-        }
-    }
 
     public class SaveWallpaperTask extends AsyncTask<Bitmap, Void,
             Void> {
@@ -223,6 +209,38 @@ public class MainActivity extends CActivity {
         imageView.destroyDrawingCache();
         imageView.buildDrawingCache();
         bitmap = imageView.getDrawingCache();
+    }
+
+    private boolean isStorageGranted() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_STORAGE_PERM);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode != REQUEST_STORAGE_PERM) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
+        }
+        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.app_name))
+                .setMessage(R.string.no_permission)
+                .setPositiveButton("Ok", listener)
+                .show();
     }
 
     @Override

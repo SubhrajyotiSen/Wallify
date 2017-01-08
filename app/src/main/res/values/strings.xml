@@ -5,4 +5,5 @@
     <string name="app_description">A randomized wallpaper app</string>
     <string name="github">GitHub</string>
     <string name="github_link">https://github.com/SubhrajyotiSen/Wallify</string>
+    <string name="no_permission">External Storage permission not granted</string>
 </resources>
