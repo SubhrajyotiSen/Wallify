@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.afollestad.appthemeengine.ATE;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -37,7 +37,7 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseThemeActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.randomFab)
     FloatingActionButton randomFab;
@@ -53,22 +53,6 @@ public class MainActivity extends BaseThemeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if (!ATE.config(this, "light_theme").isConfigured(4)) {
-            ATE.config(this, "light_theme")
-                    .activityTheme(R.style.AppTheme)
-                    .primaryColorRes(R.color.colorPrimaryLightDefault)
-                    .accentColorRes(R.color.colorAccentLightDefault)
-                    .coloredActionBar(true)
-                    .commit();
-        }
-        if (!ATE.config(this, "dark_theme").isConfigured(4)) {
-            ATE.config(this, "dark_theme")
-                    .activityTheme(R.style.AppThemeDark)
-                    .primaryColorRes(R.color.colorPrimaryDarkDefault)
-                    .accentColorRes(R.color.colorAccentDarkDefault)
-                    .coloredActionBar(true)
-                    .commit();
-        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

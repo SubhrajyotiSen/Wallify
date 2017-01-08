@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
 
     <PreferenceCategory
@@ -28,29 +27,7 @@
             android:key="about"/>
     </PreferenceCategory>
 
-    <com.afollestad.appthemeengine.prefs.ATEPreferenceCategory
-        android:title="Base Theme"
-        >
 
-        <com.afollestad.appthemeengine.prefs.ATESwitchPreference
-            android:defaultValue="false"
-            android:key="dark_theme"
-            android:persistent="true"
-            android:title="Dark Theme"
-            android:widgetLayout="@layout/ate_preference_checkbox"
-            app:ateKey_pref_switch="?ate_key" />
-
-
-    </com.afollestad.appthemeengine.prefs.ATEPreferenceCategory>
-    <com.afollestad.appthemeengine.prefs.ATEPreferenceCategory
-        android:title="Advanced"
-        >
-        <com.afollestad.appthemeengine.prefs.ATEColorPreference
-            android:key="accent_color"
-            android:persistent="true"
-            android:title="FAB Color"
-            app:ateKey_pref_color="?ate_key" />
-    </com.afollestad.appthemeengine.prefs.ATEPreferenceCategory>
 
 
 </PreferenceScreen>
