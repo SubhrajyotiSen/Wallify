@@ -8,4 +8,8 @@
     <string name="no_permission">External Storage permission not granted</string>
     <string name="normal_link">https://unsplash.it/1920/1080/?random</string>
     <string name="grayscale_link">https://unsplash.it/g/1920/1080/?random</string>
+    <string name="wallpaper_save_error">Error while saving wallpaper</string>
+    <string name="wallpaper_save_success">Wallpaper Saved</string>
+    <string name="wallpaper_set_error">Error while setting wallpaper</string>
+    <string name="wallpaper_set_success">Wallpaper set successfully</string>
 </resources>

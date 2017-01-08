@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -147,25 +148,30 @@ public class MainActivity extends CActivity {
 
         @Override
         protected Void doInBackground(Bitmap... params) {
+            boolean status = true;
             final Bitmap bitmap = params[0];
             WallpaperManager myWallpaperManager
                     = WallpaperManager.getInstance(getApplicationContext());
             try {
                 myWallpaperManager.setBitmap(bitmap);
+            } catch (IOException e) {
+                status = false;
+                e.printStackTrace();
+            }
+            finally {
+                final boolean finalStatus = status;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Wallpaper Set", Toast.LENGTH_SHORT).show();
+                        if (finalStatus)
+                            Toast.makeText(getApplicationContext(), R.string.wallpaper_set_success, Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(getApplicationContext(), R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
                     }
                 });
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-
             return null;
         }
-
     }
 
 
@@ -176,35 +182,34 @@ public class MainActivity extends CActivity {
         @Override
         protected Void doInBackground(Bitmap... params) {
             final Bitmap bitmap = params[0];
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.ENGLISH);
             Date now = new Date();
-
-            OutputStream fOut = null;
+            boolean status = true;
+            OutputStream fOut ;
             try {
                 File root = new File(Environment.getExternalStorageDirectory()
                         + File.separator + getString(R.string.app_name) + File.separator);
-                root.mkdirs();
-                File sdImageMainDirectory = new File(root, formatter.format(now) + ".jpg");
-                fOut = new FileOutputStream(sdImageMainDirectory);
+                if(root.mkdirs()) {
+                    File sdImageMainDirectory = new File(root, formatter.format(now) + ".jpg");
+                    fOut = new FileOutputStream(sdImageMainDirectory);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                    fOut.flush();
+                    fOut.close();
+                }
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Error occurred. Please try again later.",
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            try {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                assert fOut != null;
-                fOut.flush();
-                fOut.close();
+                status = false;
+                e.printStackTrace();
+            } finally {
+                final boolean finalStatus = status;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "Wallpaper Saved", Toast.LENGTH_SHORT).show();
+                        if (finalStatus)
+                            Toast.makeText(MainActivity.this, R.string.wallpaper_save_success, Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(MainActivity.this, R.string.wallpaper_save_error, Toast.LENGTH_SHORT).show();
                     }
                 });
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
             return null;
         }
