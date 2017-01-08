@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.util.Log;
 
 public class MyReceiver extends BroadcastReceiver {
+
+    final private static String TAG = "Wallify";
+
     public MyReceiver() {
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.v("hahaha","rev");
+        Log.v(TAG, "receiver");
         Intent intent1 = new Intent(context,MyService.class);
         context.startService(intent1);
     }
