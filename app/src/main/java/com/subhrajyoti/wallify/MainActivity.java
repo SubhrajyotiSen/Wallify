@@ -13,7 +13,6 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +26,8 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.polaric.colorful.CActivity;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,7 +38,7 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends CActivity {
 
     @Bind(R.id.randomFab)
     FloatingActionButton randomFab;
@@ -222,6 +223,12 @@ public class MainActivity extends AppCompatActivity {
         imageView.destroyDrawingCache();
         imageView.buildDrawingCache();
         bitmap = imageView.getDrawingCache();
+    }
+
+    @Override
+    public void onBackPressed() {
+        System.exit(0);
+        super.onBackPressed();
     }
 
 }

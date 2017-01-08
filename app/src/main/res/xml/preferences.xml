@@ -17,6 +17,15 @@
             android:key="daily"/>
     </PreferenceCategory>
     <PreferenceCategory
+        android:title="Theme Options">
+        <CheckBoxPreference
+            android:title="Dark Mode"
+            android:defaultValue="false"
+            android:summary="Use Dark Mode throughout the app "
+            android:key="dark"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
         android:title="Extras">
         <Preference
             android:title="About"

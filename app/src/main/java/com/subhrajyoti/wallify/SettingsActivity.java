@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
-public class SettingsActivity extends AppCompatActivity {
+import org.polaric.colorful.CActivity;
+import org.polaric.colorful.Colorful;
+
+public class SettingsActivity extends CActivity {
 
 
     @Override
@@ -38,13 +41,35 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
 
-
         }
 
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
+            findPreference("dark").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    if (o.toString().equals("true"))
+                        Colorful.config(getActivity())
+                                .primaryColor(Colorful.ThemeColor.BLUE)
+                                .accentColor(Colorful.ThemeColor.PINK)
+                                .translucent(false)
+                                .dark(true)
+                                .apply();
+                    else
+                        Colorful.config(getActivity())
+                                .primaryColor(Colorful.ThemeColor.BLUE)
+                                .accentColor(Colorful.ThemeColor.PINK)
+                                .translucent(false)
+                                .dark(false)
+                                .apply();
+                    Intent intent = getActivity().getIntent();
+                    getActivity().finish();
+                    startActivity(intent);
+                    return true;
+                }
+            });
             findPreference("about").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
