@@ -32,12 +32,10 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     public static class PrefsFragment extends PreferenceFragment {
-        String mAteKey;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
             addPreferencesFromResource(R.xml.preferences);
 
 
@@ -46,19 +44,13 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onViewCreated(View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-            findPreference("updates").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    return false;
-                }
-            });
 
             findPreference("about").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("Wallify");
-                    builder.setMessage("A randomized wallpaper app");
+                    builder.setTitle(getString(R.string.app_name));
+                    builder.setMessage(R.string.app_description);
 
                     String positiveText = getString(android.R.string.ok);
                     builder.setPositiveButton(positiveText,
@@ -69,15 +61,13 @@ public class SettingsActivity extends AppCompatActivity {
                                 }
                             });
 
-                    String negativeText = "GitHub";
-                    builder.setNegativeButton(negativeText,
+                    builder.setNegativeButton(getString(R.string.github),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // negative button logic
-                                    String url = "https://github.com/SubhrajyotiSen/Wallify";
                                     Intent i = new Intent(Intent.ACTION_VIEW);
-                                    i.setData(Uri.parse(url));
+                                    i.setData(Uri.parse(getString(R.string.github_link)));
                                     startActivity(i);
 
                                 }

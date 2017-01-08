@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <PreferenceCategory
         android:title="Image Settings">
     <CheckBoxPreference android:title="Grayscale"
@@ -19,9 +18,6 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Extras">
-        <Preference
-            android:title="Check for Updates"
-            android:key="updates"/>
         <Preference
             android:title="About"
             android:key="about"/>
