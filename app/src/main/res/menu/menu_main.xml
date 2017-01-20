@@ -8,11 +8,4 @@
         android:title="@string/action_save"
         android:icon="@drawable/ic_save_white_24dp"
         app:showAsAction="always" />
-
-    <item
-        android:id="@+id/settings"
-        android:orderInCategory="103"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_settings_white_24dp"
-        app:showAsAction="always"/>
 </menu>

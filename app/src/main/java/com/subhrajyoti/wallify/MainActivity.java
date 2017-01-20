@@ -114,8 +114,6 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
                     e.printStackTrace();
                 }
                 break;
-            case R.id.settings:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 
         }
 
@@ -220,6 +218,11 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        switch (id){
+            case R.id.settings:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                break;
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
     }
