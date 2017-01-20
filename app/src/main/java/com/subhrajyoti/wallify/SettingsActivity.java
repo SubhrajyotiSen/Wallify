@@ -24,7 +24,8 @@ public class SettingsActivity extends CActivity {
         assert toolbar != null;
         toolbar.setTitle("Settings");
         setSupportActionBar(toolbar);
-
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, new PrefsFragment()).commit();
