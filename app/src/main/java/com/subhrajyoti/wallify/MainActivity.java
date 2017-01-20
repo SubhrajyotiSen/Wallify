@@ -5,9 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -28,12 +26,6 @@ import com.squareup.picasso.Picasso;
 
 import org.polaric.colorful.CActivity;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
@@ -102,7 +94,11 @@ public class MainActivity extends CActivity {
 
         switch (id) {
             case R.id.action_save:
-                saveImage();
+                try {
+                    saveImage();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
@@ -138,9 +134,13 @@ public class MainActivity extends CActivity {
                 });
     }
 
-    public void saveImage() {
+    public void saveImage() throws ExecutionException, InterruptedException {
         generateCache();
-        new SaveWallpaperTask().execute(bitmap);
+        boolean status = new SaveWallpaperTask().execute(bitmap).get();
+        if (status)
+            Toast.makeText(MainActivity.this, R.string.wallpaper_save_success, Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(MainActivity.this, R.string.wallpaper_save_error, Toast.LENGTH_SHORT).show();
     }
 
     public void setWallpaper() throws ExecutionException, InterruptedException {
@@ -150,49 +150,6 @@ public class MainActivity extends CActivity {
             Toast.makeText(this, R.string.wallpaper_set_success, Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(this, R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
-    }
-
-
-
-
-    public class SaveWallpaperTask extends AsyncTask<Bitmap, Void,
-            Void> {
-
-        @Override
-        protected Void doInBackground(Bitmap... params) {
-            final Bitmap bitmap = params[0];
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.ENGLISH);
-            Date now = new Date();
-            boolean status = true;
-            OutputStream fOut ;
-            try {
-                File root = new File(Environment.getExternalStorageDirectory()
-                        + File.separator + getString(R.string.app_name) + File.separator);
-                if(root.mkdirs()) {
-                    File sdImageMainDirectory = new File(root, formatter.format(now) + ".jpg");
-                    fOut = new FileOutputStream(sdImageMainDirectory);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                    fOut.flush();
-                    fOut.close();
-                }
-            } catch (Exception e) {
-                status = false;
-                e.printStackTrace();
-            } finally {
-                final boolean finalStatus = status;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (finalStatus)
-                            Toast.makeText(MainActivity.this, R.string.wallpaper_save_success, Toast.LENGTH_SHORT).show();
-                        else
-                            Toast.makeText(MainActivity.this, R.string.wallpaper_save_error, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-            return null;
-        }
-
     }
 
     private void generateCache(){
