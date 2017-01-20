@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/online"
+        android:title="@string/downloads"
+        android:icon="@drawable/ic_file_download_black_24dp"
+        />
+    <item android:id="@+id/offline"
+        android:title="@string/favourites"
+        android:icon="@drawable/ic_favorite_black_24dp"
+        />
+
+    <item
+        android:id="@+id/trash"
+        android:title="@string/restore_wallpaper"
+        android:icon="@drawable/ic_settings_backup_restore_black_24dp"
+        />
+
+    <item android:id="@+id/about"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        />
+
+</menu>

@@ -13,4 +13,10 @@
     <string name="wallpaper_set_error">Error while setting wallpaper</string>
     <string name="wallpaper_set_success">Wallpaper set successfully</string>
     <string name="settings">Settings</string>
+    <string name="navigationbar_header_image">NavigationBar Header image</string>
+    <string name="downloads">Downloads</string>
+    <string name="favourites">Favourites</string>
+    <string name="restore_wallpaper">Restore wallpaper</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

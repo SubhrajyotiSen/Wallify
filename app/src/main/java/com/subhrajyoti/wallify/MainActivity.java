@@ -9,7 +9,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -31,7 +35,7 @@ import java.util.concurrent.ExecutionException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends CActivity {
+public class MainActivity extends CActivity  implements NavigationView.OnNavigationItemSelectedListener{
 
     @Bind(R.id.randomFab)
     FloatingActionButton randomFab;
@@ -41,6 +45,10 @@ public class MainActivity extends CActivity {
     ImageView imageView;
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
+    @Bind(R.id.nav_view)
+    NavigationView navigationView;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
     Bitmap bitmap;
     boolean grayscale;
     final private int REQUEST_STORAGE_PERM = 11;
@@ -54,6 +62,12 @@ public class MainActivity extends CActivity {
         setSupportActionBar(toolbar);
 
         ButterKnife.bind(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
         if (!isStorageGranted())
             requestPermission();
@@ -200,5 +214,13 @@ public class MainActivity extends CActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         loadImage();
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return false;
     }
 }
