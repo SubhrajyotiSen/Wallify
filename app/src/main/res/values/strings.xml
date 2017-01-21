@@ -21,4 +21,5 @@
     <string name="close">Close</string>
     <string name="restore_success">Wallpaper restored successfully</string>
     <string name="restore_error">Error while restoring wallpaper</string>
+    <string name="no_restore">No wallpaper to restore</string>
 </resources>

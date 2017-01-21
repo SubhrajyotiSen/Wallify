@@ -170,10 +170,14 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
     }
 
     public void restoreWallpaper() throws ExecutionException, InterruptedException {
-        if (new SetWallpaperTask().execute(oldWallpaper).get())
-            Toast.makeText(this, R.string.restore_success, Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(this, R.string.restore_error, Toast.LENGTH_SHORT).show();
+        if (oldWallpaper == null)
+            Toast.makeText(this, R.string.no_restore, Toast.LENGTH_SHORT).show();
+        else {
+            if (new SetWallpaperTask().execute(oldWallpaper).get())
+                Toast.makeText(this, R.string.restore_success, Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, R.string.restore_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void generateCache(){
