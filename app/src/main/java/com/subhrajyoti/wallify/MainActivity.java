@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -50,6 +51,7 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     Bitmap bitmap;
+    Bitmap oldWallpaper;
     boolean grayscale;
     final private int REQUEST_STORAGE_PERM = 11;
 
@@ -157,11 +159,21 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
 
     public void setWallpaper() throws ExecutionException, InterruptedException {
         generateCache();
+
+        oldWallpaper = ((BitmapDrawable) Utils.getWallpapermanager().getDrawable()).getBitmap();
+
         boolean status = new SetWallpaperTask().execute(bitmap).get();
         if (status)
             Toast.makeText(this, R.string.wallpaper_set_success, Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(this, R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
+    }
+
+    public void restoreWallpaper() throws ExecutionException, InterruptedException {
+        if (new SetWallpaperTask().execute(oldWallpaper).get())
+            Toast.makeText(this, R.string.restore_success, Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this, R.string.restore_error, Toast.LENGTH_SHORT).show();
     }
 
     private void generateCache(){
@@ -222,8 +234,17 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
             case R.id.settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
+            case R.id.restore:
+                try {
+                    restoreWallpaper();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
     }
+
+
 }
