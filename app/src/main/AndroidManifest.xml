@@ -42,6 +42,11 @@
             android:name=".MyService"
             android:enabled="true"
             android:exported="true"/>
+
+        <provider
+            android:authorities="com.subhrajyoti.wallify.app"
+            android:name=".db.ImageProvider"
+            android:exported="false" />
     </application>
 
 </manifest>
