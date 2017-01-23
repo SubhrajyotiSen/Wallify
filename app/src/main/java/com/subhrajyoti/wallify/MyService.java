@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 public class MyService extends Service {
 
     final private static String TAG = "Wallify";
+    private Target mTarget;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -30,7 +31,7 @@ public class MyService extends Service {
         else
             url = getString(R.string.normal_link);
         Log.v(TAG, "service called");
-        final Target mTarget = new Target() {
+        mTarget = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
                 Log.d(TAG, "Bitmap downloaded");
@@ -47,10 +48,12 @@ public class MyService extends Service {
 
             @Override
             public void onBitmapFailed(Drawable drawable) {
+                Log.d(TAG, "Bitmap failed");
             }
 
             @Override
             public void onPrepareLoad(Drawable drawable) {
+                Log.d(TAG, "Bitmap onPrepareLoad");
             }
         };
         Picasso.with(this)

@@ -160,7 +160,7 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
     public void setWallpaper() throws ExecutionException, InterruptedException {
         generateCache();
 
-        oldWallpaper = ((BitmapDrawable) Utils.getWallpapermanager().getDrawable()).getBitmap();
+        oldWallpaper = ((BitmapDrawable) Utils.getWallpaperManager().getDrawable()).getBitmap();
 
         boolean status = new SetWallpaperTask().execute(bitmap).get();
         if (status)
