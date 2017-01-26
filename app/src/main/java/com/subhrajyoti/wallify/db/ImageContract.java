@@ -27,7 +27,7 @@ public class ImageContract {
 
         public static final String IMAGE_ID = "image_id";
 
-        public static final String IMAGE_BLOG = "blog";
+        public static final String IMAGE_BLOB = "blob";
 
         public static Uri buildUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI, id);

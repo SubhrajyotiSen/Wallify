@@ -20,7 +20,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         final String CREATE_TABLE_NOTE = "CREATE TABLE " + ImageContract.ImageEntry.TABLE_NAME + "("
                 + ImageContract.ImageEntry.IMAGE_ID + SPACE + "INTEGER PRIMARY KEY" + COMMA
-                + ImageContract.ImageEntry.IMAGE_BLOG + SPACE + "BLOB NOT NULL"
+                + ImageContract.ImageEntry.IMAGE_BLOB + SPACE + "BLOB NOT NULL"
                 + ")";
 
         sqLiteDatabase.execSQL(CREATE_TABLE_NOTE);

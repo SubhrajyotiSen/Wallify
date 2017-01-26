@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MyService extends Service {
 
-    final private static String TAG = "Wallify";
+    final private static String TAG = MyService.class.getSimpleName();
     private Target mTarget;
 
     @Override

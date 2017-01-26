@@ -234,7 +234,7 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
@@ -244,6 +244,9 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
+                break;
+            case R.id.favourites:
+                startActivity(new Intent(MainActivity.this, FavActivity.class));
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class MyReceiver extends BroadcastReceiver {
 
-    final private static String TAG = "Wallify";
+    final private static String TAG = MyReceiver.class.getSimpleName();
 
     public MyReceiver() {
     }
