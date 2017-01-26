@@ -10,8 +10,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.subhrajyoti.wallify.db.ImageContract;
+import com.subhrajyoti.wallify.recyclerview.RecyclerTouchListener;
 import com.subhrajyoti.wallify.recyclerview.RecyclerViewAdapter;
 
 import butterknife.Bind;
@@ -41,6 +43,24 @@ public class FavActivity extends AppCompatActivity implements LoaderManager.Load
         setSupportActionBar(toolbar);
         getSupportLoaderManager().initLoader(0, null,this );
 
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Cursor cursor = recyclerViewAdapter.getCursor();
+                cursor.moveToPosition(position);
+                int index = cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID);
+                index = cursor.getInt(index);
+                Log.d("TAG", String.valueOf(index));
+                String selection = ImageContract.ImageEntry.IMAGE_ID + " = ?";
+                getContentResolver().delete(ImageContract.ImageEntry.CONTENT_URI, selection, new String[]{String.valueOf(index)});
+
+            }
+        }));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.subhrajyoti.wallify;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,9 +29,11 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.subhrajyoti.wallify.db.ImageContract;
 
 import org.polaric.colorful.CActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
@@ -116,6 +119,8 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
                     e.printStackTrace();
                 }
                 break;
+            case R.id.action_fav:
+                new Thread(new Task()).start();
 
         }
 
@@ -251,6 +256,23 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
+    }
+
+    class Task implements Runnable {
+        @Override
+        public void run() {
+            ContentValues values = new ContentValues();
+            values.put(ImageContract.ImageEntry.IMAGE_BLOB, imageViewToByte());
+            getContentResolver().insert(ImageContract.ImageEntry.CONTENT_URI,values);
+
+        }
+        private byte[] imageViewToByte() {
+            generateCache();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            return stream.toByteArray();
+        }
+
     }
 
 
