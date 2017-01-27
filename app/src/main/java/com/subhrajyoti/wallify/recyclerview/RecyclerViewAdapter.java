@@ -25,7 +25,7 @@ public class RecyclerViewAdapter extends CursorRecyclerAdapter<MainViewHolder> {
 
     @Override
     public MainViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycler_item, viewGroup, false);
         return new MainViewHolder(v);
     }
 
