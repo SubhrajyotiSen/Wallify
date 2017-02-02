@@ -30,9 +30,9 @@ public class SaveWallpaperTask extends AsyncTask<Bitmap, Void,
             File root = new File(Environment.getExternalStorageDirectory()
                     + File.separator + context.getString(R.string.app_name) + File.separator);
             if(root.mkdirs() || root.exists()) {
-                File sdImageMainDirectory = new File(root, formatter.format(now) + ".jpg");
+                File sdImageMainDirectory = new File(root, formatter.format(now) + ".png");
                 fOut = new FileOutputStream(sdImageMainDirectory);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
                 fOut.flush();
                 fOut.close();
                 ContentValues values = new ContentValues();
