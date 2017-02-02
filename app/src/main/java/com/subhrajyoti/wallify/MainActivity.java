@@ -1,13 +1,14 @@
 package com.subhrajyoti.wallify;
 
 import android.Manifest;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -29,11 +30,11 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-import com.subhrajyoti.wallify.db.ImageContract;
+import com.subhrajyoti.wallify.model.SaveWallpaperAsyncModel;
 
 import org.polaric.colorful.CActivity;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
@@ -76,8 +77,16 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
 
         if (!isStorageGranted())
             requestPermission();
+        File file = new File(Environment.getExternalStorageDirectory()
+                + File.separator + getString(R.string.app_name) + File.separator + "backup.png");
+        if (file.exists()){
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            oldWallpaper = BitmapFactory.decodeFile(file.toString(), options);
+        }
+
         if ((savedInstanceState==null))
-        loadImage();
+            loadImage();
         randomFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +162,7 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
 
     public void saveImage() throws ExecutionException, InterruptedException {
         generateCache();
-        boolean status = new SaveWallpaperTask().execute(bitmap).get();
+        boolean status = new SaveWallpaperTask().execute(new SaveWallpaperAsyncModel(bitmap, false)).get();
         if (status)
             Toast.makeText(MainActivity.this, R.string.wallpaper_save_success, Toast.LENGTH_SHORT).show();
         else
@@ -239,11 +248,32 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
         int id = item.getItemId();
         switch (id) {
             case R.id.restore:
-                try {
-                    restoreWallpaper();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+                drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+                    }
+
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        try {
+                            restoreWallpaper();
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onDrawerStateChanged(int newState) {
+
+                    }
+                });
+
                 break;
             case R.id.settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
@@ -256,5 +286,12 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
         return false;
     }
 
-
+    @Override
+    protected void onStop() {
+        if (oldWallpaper!=null) {
+            SaveWallpaperAsyncModel saveWallpaperAsyncModel = new SaveWallpaperAsyncModel(oldWallpaper, true);
+            (new SaveWallpaperTask()).execute(saveWallpaperAsyncModel);
+        }
+        super.onDestroy();
+    }
 }

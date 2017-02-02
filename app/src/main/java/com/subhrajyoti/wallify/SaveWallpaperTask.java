@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.subhrajyoti.wallify.db.ImageContract;
+import com.subhrajyoti.wallify.model.SaveWallpaperAsyncModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,22 +16,30 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class SaveWallpaperTask extends AsyncTask<Bitmap, Void,
+public class SaveWallpaperTask extends AsyncTask<SaveWallpaperAsyncModel, Void,
         Boolean> {
 
     @Override
-    protected Boolean doInBackground(Bitmap... params) {
-        final Bitmap bitmap = params[0];
+    protected Boolean doInBackground(SaveWallpaperAsyncModel... params) {
+        final Bitmap bitmap = params[0].getBitmap();
+        final boolean CODE = params[0].getBACKUP();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.ENGLISH);
         Date now = new Date();
         boolean status = true;
         Context context = MyApplication.getContext();
         OutputStream fOut ;
         try {
+
             File root = new File(Environment.getExternalStorageDirectory()
                     + File.separator + context.getString(R.string.app_name) + File.separator);
             if(root.mkdirs() || root.exists()) {
-                File sdImageMainDirectory = new File(root, formatter.format(now) + ".png");
+                String filename;
+                if (CODE)
+                    filename = "backup";
+                else
+                    filename = formatter.format(now);
+
+                File sdImageMainDirectory = new File(root, filename + ".png");
                 fOut = new FileOutputStream(sdImageMainDirectory);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
                 fOut.flush();
