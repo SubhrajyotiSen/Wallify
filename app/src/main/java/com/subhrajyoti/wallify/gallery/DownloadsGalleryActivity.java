@@ -20,17 +20,12 @@ import com.subhrajyoti.wallify.model.Image;
 import java.io.File;
 import java.util.ArrayList;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 public class DownloadsGalleryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    RecyclerViewAdapter recyclerViewAdapter;
-    GridLayoutManager linearLayoutManager;
+    private RecyclerView recyclerView;
+    private Toolbar toolbar;
+    private RecyclerViewAdapter recyclerViewAdapter;
+    private GridLayoutManager linearLayoutManager;
     private ArrayList<Image> images;
 
     @Override
@@ -38,7 +33,8 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fav);
 
-        ButterKnife.bind(this);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         images = new ArrayList<>();
 

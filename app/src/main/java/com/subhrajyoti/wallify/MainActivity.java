@@ -39,25 +39,16 @@ import org.polaric.colorful.CActivity;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 public class MainActivity extends CActivity  implements NavigationView.OnNavigationItemSelectedListener{
 
-    @Bind(R.id.randomFab)
-    FloatingActionButton randomFab;
-    @Bind(R.id.setFab)
-    FloatingActionButton setFab;
-    @Bind(R.id.imageView)
-    ImageView imageView;
-    @Bind(R.id.progressBar)
-    ProgressBar progressBar;
-    @Bind(R.id.nav_view)
-    NavigationView navigationView;
-    @Bind(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
-    Bitmap bitmap;
-    Bitmap oldWallpaper;
+    private FloatingActionButton randomFab;
+    private FloatingActionButton setFab;
+    private ImageView imageView;
+    private ProgressBar progressBar;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
+    private Bitmap bitmap;
+    private Bitmap oldWallpaper;
     boolean grayscale;
     final private int REQUEST_STORAGE_PERM = 11;
 
@@ -69,7 +60,12 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ButterKnife.bind(this);
+        randomFab = (FloatingActionButton) findViewById(R.id.randomFab);
+        setFab = (FloatingActionButton) findViewById(R.id.setFab);
+        imageView = (ImageView) findViewById(R.id.imageView);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.open, R.string.close);
