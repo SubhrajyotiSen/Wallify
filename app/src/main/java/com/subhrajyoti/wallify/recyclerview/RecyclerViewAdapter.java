@@ -1,24 +1,24 @@
 package com.subhrajyoti.wallify.recyclerview;
 
 
-import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.subhrajyoti.wallify.DownloadsGalleryActivity;
 import com.subhrajyoti.wallify.R;
-import com.subhrajyoti.wallify.db.ImageContract;
+import com.subhrajyoti.wallify.model.Image;
 
 import java.io.File;
+import java.util.ArrayList;
 
-public class RecyclerViewAdapter extends CursorRecyclerAdapter<MainViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<MainViewHolder> {
 
-    public RecyclerViewAdapter(DownloadsGalleryActivity downloadsGalleryActivity, Cursor c) {
-        super(downloadsGalleryActivity.getApplicationContext(), c);
+    private ArrayList<Image> images;
+
+    public RecyclerViewAdapter(ArrayList<Image> arrayList) {
+        images = arrayList;
     }
 
     @Override
@@ -33,9 +33,14 @@ public class RecyclerViewAdapter extends CursorRecyclerAdapter<MainViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(MainViewHolder viewHolder, Cursor cursor, int position) {
-        Log.d("PATH", cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH)));
-        viewHolder.thumbnail.setImageURI(Uri.fromFile(new File(cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH)))));
+    public void onBindViewHolder(MainViewHolder holder, int position) {
+        holder.thumbnail.setImageURI(Uri.fromFile(new File(images.get(position).getPath())));
 
     }
+
+    @Override
+    public int getItemCount() {
+        return images.size();
+    }
+
 }

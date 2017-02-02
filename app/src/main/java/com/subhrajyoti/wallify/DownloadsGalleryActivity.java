@@ -2,6 +2,7 @@ package com.subhrajyoti.wallify;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -13,8 +14,12 @@ import android.util.Log;
 import android.view.View;
 
 import com.subhrajyoti.wallify.db.ImageContract;
+import com.subhrajyoti.wallify.model.Image;
 import com.subhrajyoti.wallify.recyclerview.RecyclerTouchListener;
 import com.subhrajyoti.wallify.recyclerview.RecyclerViewAdapter;
+
+import java.io.File;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,6 +32,7 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
     Toolbar toolbar;
     RecyclerViewAdapter recyclerViewAdapter;
     GridLayoutManager linearLayoutManager;
+    private ArrayList<Image> images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +41,9 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
 
         ButterKnife.bind(this);
 
-        recyclerViewAdapter = new RecyclerViewAdapter(this,null);
+        images = new ArrayList<>();
+
+        recyclerViewAdapter = new RecyclerViewAdapter(images);
         linearLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -43,22 +51,29 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
         setSupportActionBar(toolbar);
         getSupportLoaderManager().initLoader(0, null,this );
 
+
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("images", images);
+                bundle.putInt("position", position);
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                FullscreenDialog newFragment = FullscreenDialog.newInstance();
+                newFragment.setArguments(bundle);
+                newFragment.show(ft, "slideshow");
 
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                Cursor cursor = recyclerViewAdapter.getCursor();
-                cursor.moveToPosition(position);
-                int index = cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID);
-                index = cursor.getInt(index);
+                int index = images.get(position).getId();
                 Log.d("TAG", String.valueOf(index));
                 String selection = ImageContract.ImageEntry.IMAGE_ID + " = ?";
                 getContentResolver().delete(ImageContract.ImageEntry.CONTENT_URI, selection, new String[]{String.valueOf(index)});
-                (new File(cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH)))).delete();
+                (new File(images.get(position).getPath())).delete();
 
             }
         }));
@@ -73,12 +88,15 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.d("Count",String.valueOf(data.getCount()));
-        recyclerViewAdapter.swapCursor(data);
+        while (data.moveToNext())
+            images.add(new Image(
+                            data.getInt(data.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID)),
+                            data.getString(data.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH))));
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 
 
     @Override
     public void onLoaderReset(Loader loader) {
-        recyclerViewAdapter.swapCursor(null);
     }
 }
