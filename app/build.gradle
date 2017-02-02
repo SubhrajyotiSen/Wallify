@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'supersenboy'
+            keyPassword 'password'
+            storeFile file('./keystore.jks')
+            storePassword 'password'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-
     defaultConfig {
         applicationId "com.subhrajyoti.wallify"
         minSdkVersion 15
@@ -16,6 +23,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     return void
@@ -28,10 +36,10 @@ allprojects {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:design:25.1.1'
     compile 'com.squareup.picasso:picasso:2.5.1'
     compile 'com.github.garretyoder:Colorful:1.1'
 }
