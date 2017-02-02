@@ -2,20 +2,23 @@ package com.subhrajyoti.wallify.recyclerview;
 
 
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.subhrajyoti.wallify.DownloadsGalleryActivity;
 import com.subhrajyoti.wallify.R;
 import com.subhrajyoti.wallify.db.ImageContract;
 
+import java.io.File;
+
 public class RecyclerViewAdapter extends CursorRecyclerAdapter<MainViewHolder> {
 
-    public RecyclerViewAdapter(Cursor c) {
-        super(c);
+    public RecyclerViewAdapter(DownloadsGalleryActivity downloadsGalleryActivity, Cursor c) {
+        super(downloadsGalleryActivity.getApplicationContext(), c);
     }
 
     @Override
@@ -29,14 +32,10 @@ public class RecyclerViewAdapter extends CursorRecyclerAdapter<MainViewHolder> {
         return new MainViewHolder(v);
     }
 
-
     @Override
-    public void onBindViewHolder(MainViewHolder holder, Cursor cursor) {
-        holder.thumbnail.setImageBitmap(arrayToBitmap(cursor.getBlob(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_BLOB))));
-    }
+    public void onBindViewHolder(MainViewHolder viewHolder, Cursor cursor, int position) {
+        Log.d("PATH", cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH)));
+        viewHolder.thumbnail.setImageURI(Uri.fromFile(new File(cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH)))));
 
-    private Bitmap arrayToBitmap(byte a[]){
-        return BitmapFactory.decodeByteArray(a, 0, a.length);
     }
-
 }

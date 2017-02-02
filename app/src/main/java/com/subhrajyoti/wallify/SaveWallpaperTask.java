@@ -1,9 +1,12 @@
 package com.subhrajyoti.wallify;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Environment;
+
+import com.subhrajyoti.wallify.db.ImageContract;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,12 +29,15 @@ public class SaveWallpaperTask extends AsyncTask<Bitmap, Void,
         try {
             File root = new File(Environment.getExternalStorageDirectory()
                     + File.separator + context.getString(R.string.app_name) + File.separator);
-            if(root.mkdirs()) {
+            if(root.mkdirs() || root.exists()) {
                 File sdImageMainDirectory = new File(root, formatter.format(now) + ".jpg");
                 fOut = new FileOutputStream(sdImageMainDirectory);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
                 fOut.flush();
                 fOut.close();
+                ContentValues values = new ContentValues();
+                values.put(ImageContract.ImageEntry.IMAGE_PATH, sdImageMainDirectory.toString());
+                MyApplication.getContext().getContentResolver().insert(ImageContract.ImageEntry.CONTENT_URI,values);
             }
         } catch (Exception e) {
             status = false;

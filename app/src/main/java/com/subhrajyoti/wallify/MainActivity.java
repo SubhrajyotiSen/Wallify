@@ -119,8 +119,6 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
                     e.printStackTrace();
                 }
                 break;
-            case R.id.action_fav:
-                new Thread(new Task()).start();
 
         }
 
@@ -240,9 +238,6 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         switch (id) {
-            case R.id.settings:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                break;
             case R.id.restore:
                 try {
                     restoreWallpaper();
@@ -250,29 +245,15 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
                     e.printStackTrace();
                 }
                 break;
-            case R.id.favourites:
-                startActivity(new Intent(MainActivity.this, FavActivity.class));
+            case R.id.settings:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
+            case R.id.downloads:
+                startActivity(new Intent(MainActivity.this, DownloadsGalleryActivity.class));
+
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
-    }
-
-    class Task implements Runnable {
-        @Override
-        public void run() {
-            ContentValues values = new ContentValues();
-            values.put(ImageContract.ImageEntry.IMAGE_BLOB, imageViewToByte());
-            getContentResolver().insert(ImageContract.ImageEntry.CONTENT_URI,values);
-
-        }
-        private byte[] imageViewToByte() {
-            generateCache();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            return stream.toByteArray();
-        }
-
     }
 
 

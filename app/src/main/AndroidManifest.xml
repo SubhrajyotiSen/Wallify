@@ -48,7 +48,7 @@
             android:authorities="com.subhrajyoti.wallify.app"
             android:exported="false" />
 
-        <activity android:name=".FavActivity"/>
+        <activity android:name=".DownloadsGalleryActivity"/>
     </application>
 
 </manifest>

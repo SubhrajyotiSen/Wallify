@@ -4,10 +4,6 @@
         android:title="@string/downloads"
         android:icon="@drawable/ic_file_download_black_24dp"
         />
-    <item android:id="@+id/favourites"
-        android:title="@string/favourites"
-        android:icon="@drawable/ic_favorite_black_24dp"
-        />
 
     <item
         android:id="@+id/restore"

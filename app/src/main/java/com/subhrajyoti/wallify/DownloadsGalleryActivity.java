@@ -19,7 +19,7 @@ import com.subhrajyoti.wallify.recyclerview.RecyclerViewAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class FavActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DownloadsGalleryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -35,7 +35,7 @@ public class FavActivity extends AppCompatActivity implements LoaderManager.Load
 
         ButterKnife.bind(this);
 
-        recyclerViewAdapter = new RecyclerViewAdapter(null);
+        recyclerViewAdapter = new RecyclerViewAdapter(this,null);
         linearLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -65,9 +65,7 @@ public class FavActivity extends AppCompatActivity implements LoaderManager.Load
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = {ImageContract.ImageEntry.IMAGE_ID,
-                ImageContract.ImageEntry.IMAGE_BLOB};
-        return new CursorLoader(FavActivity.this, ImageContract.ImageEntry.CONTENT_URI, projection, null,
+        return new CursorLoader(DownloadsGalleryActivity.this, ImageContract.ImageEntry.CONTENT_URI, null, null,
                 null, null);
     }
 

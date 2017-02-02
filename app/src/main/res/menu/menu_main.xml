@@ -8,11 +8,5 @@
         android:title="@string/action_save"
         android:icon="@drawable/ic_save_white_24dp"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_fav"
-        android:orderInCategory="101"
-        android:title="@string/favourite"
-        android:icon="@drawable/ic_favorite_white"
-        app:showAsAction="always"/>
 
 </menu>

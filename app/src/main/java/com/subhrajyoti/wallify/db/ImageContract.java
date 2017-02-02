@@ -25,9 +25,9 @@ public class ImageContract {
 
         public static final String TABLE_NAME = "images";
 
-        public static final String IMAGE_ID = "image_id";
+        public static final String IMAGE_ID = "_id";
 
-        public static final String IMAGE_BLOB = "blob";
+        public static final String IMAGE_PATH = "path";
 
         public static Uri buildUri(long id){
             return ContentUris.withAppendedId(CONTENT_URI, id);
