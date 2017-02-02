@@ -1,4 +1,4 @@
-package com.subhrajyoti.wallify;
+package com.subhrajyoti.wallify.gallery;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -13,10 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.subhrajyoti.wallify.R;
 import com.subhrajyoti.wallify.db.ImageContract;
 import com.subhrajyoti.wallify.model.Image;
-import com.subhrajyoti.wallify.recyclerview.RecyclerTouchListener;
-import com.subhrajyoti.wallify.recyclerview.RecyclerViewAdapter;
 
 import java.io.File;
 import java.util.ArrayList;

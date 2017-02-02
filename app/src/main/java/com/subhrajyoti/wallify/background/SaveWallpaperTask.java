@@ -1,4 +1,4 @@
-package com.subhrajyoti.wallify;
+package com.subhrajyoti.wallify.background;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,9 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Environment;
 
+import com.subhrajyoti.wallify.MyApplication;
+import com.subhrajyoti.wallify.R;
+import com.subhrajyoti.wallify.Utils;
 import com.subhrajyoti.wallify.db.ImageContract;
 import com.subhrajyoti.wallify.model.SaveWallpaperAsyncModel;
 
@@ -34,8 +37,12 @@ public class SaveWallpaperTask extends AsyncTask<SaveWallpaperAsyncModel, Void,
                     + File.separator + context.getString(R.string.app_name) + File.separator);
             if(root.mkdirs() || root.exists()) {
                 String filename;
-                if (CODE)
+                if (CODE) {
                     filename = "backup";
+                    File file = new File(Utils.getBackupImagePath());
+                    if (file.exists())
+                        file.delete();
+                }
                 else
                     filename = formatter.format(now);
 

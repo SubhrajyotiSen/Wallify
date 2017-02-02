@@ -1,4 +1,4 @@
-package com.subhrajyoti.wallify;
+package com.subhrajyoti.wallify.gallery;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.subhrajyoti.wallify.R;
 import com.subhrajyoti.wallify.model.Image;
 
 import java.io.File;
@@ -117,7 +118,7 @@ public class FullscreenDialog extends DialogFragment {
 
         @Override
         public boolean isViewFromObject(View view, Object obj) {
-            return view == ((View) obj);
+            return view == obj;
         }
 
 

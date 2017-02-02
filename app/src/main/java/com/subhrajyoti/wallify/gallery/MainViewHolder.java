@@ -1,4 +1,4 @@
-package com.subhrajyoti.wallify.recyclerview;
+package com.subhrajyoti.wallify.gallery;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

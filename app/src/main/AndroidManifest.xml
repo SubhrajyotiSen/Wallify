@@ -30,7 +30,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver
-            android:name=".MyReceiver"
+            android:name=".background.MyReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -39,7 +39,7 @@
         </receiver>
 
         <service
-            android:name=".MyService"
+            android:name=".background.MyService"
             android:enabled="true"
             android:exported="true" />
 
@@ -48,7 +48,7 @@
             android:authorities="com.subhrajyoti.wallify.app"
             android:exported="false" />
 
-        <activity android:name=".DownloadsGalleryActivity"/>
+        <activity android:name=".gallery.DownloadsGalleryActivity"/>
     </application>
 
 </manifest>

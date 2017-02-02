@@ -1,7 +1,9 @@
-package com.subhrajyoti.wallify;
+package com.subhrajyoti.wallify.background;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+
+import com.subhrajyoti.wallify.Utils;
 
 import java.io.IOException;
 

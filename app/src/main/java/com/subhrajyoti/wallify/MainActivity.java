@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -30,6 +29,9 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.subhrajyoti.wallify.background.SaveWallpaperTask;
+import com.subhrajyoti.wallify.background.SetWallpaperTask;
+import com.subhrajyoti.wallify.gallery.DownloadsGalleryActivity;
 import com.subhrajyoti.wallify.model.SaveWallpaperAsyncModel;
 
 import org.polaric.colorful.CActivity;
@@ -77,8 +79,7 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
 
         if (!isStorageGranted())
             requestPermission();
-        File file = new File(Environment.getExternalStorageDirectory()
-                + File.separator + getString(R.string.app_name) + File.separator + "backup.png");
+        File file = new File(Utils.getBackupImagePath());
         if (file.exists()){
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -179,6 +180,8 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
             Toast.makeText(this, R.string.wallpaper_set_success, Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(this, R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
+        SaveWallpaperAsyncModel saveWallpaperAsyncModel = new SaveWallpaperAsyncModel(oldWallpaper, true);
+        (new SaveWallpaperTask()).execute(saveWallpaperAsyncModel);
     }
 
     public void restoreWallpaper() throws ExecutionException, InterruptedException {
@@ -189,6 +192,7 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
                 Toast.makeText(this, R.string.restore_success, Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(this, R.string.restore_error, Toast.LENGTH_SHORT).show();
+            oldWallpaper = null;
         }
     }
 
@@ -280,18 +284,11 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
                 break;
             case R.id.downloads:
                 startActivity(new Intent(MainActivity.this, DownloadsGalleryActivity.class));
+                break;
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
     }
 
-    @Override
-    protected void onStop() {
-        if (oldWallpaper!=null) {
-            SaveWallpaperAsyncModel saveWallpaperAsyncModel = new SaveWallpaperAsyncModel(oldWallpaper, true);
-            (new SaveWallpaperTask()).execute(saveWallpaperAsyncModel);
-        }
-        super.onDestroy();
-    }
 }

@@ -1,4 +1,4 @@
-package com.subhrajyoti.wallify;
+package com.subhrajyoti.wallify.background;
 
 import android.app.Service;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.subhrajyoti.wallify.R;
 
 import java.util.concurrent.ExecutionException;
 
