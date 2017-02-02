@@ -58,6 +58,7 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
                 Log.d("TAG", String.valueOf(index));
                 String selection = ImageContract.ImageEntry.IMAGE_ID + " = ?";
                 getContentResolver().delete(ImageContract.ImageEntry.CONTENT_URI, selection, new String[]{String.valueOf(index)});
+                (new File(cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH)))).delete();
 
             }
         }));
