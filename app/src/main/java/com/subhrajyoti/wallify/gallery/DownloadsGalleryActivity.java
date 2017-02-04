@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.subhrajyoti.wallify.R;
@@ -22,15 +23,15 @@ import org.polaric.colorful.CActivity;
 import java.io.File;
 import java.util.ArrayList;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class DownloadsGalleryActivity extends CActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private final String ANALYTICS_ID = "Gallery";
     private RecyclerView recyclerView;
-    private Toolbar toolbar;
     private RecyclerViewAdapter recyclerViewAdapter;
     private GridLayoutManager linearLayoutManager;
     private ArrayList<Image> images;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private final String ANALYTICS_ID = "Gallery";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +79,10 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
                 Log.d("TAG", String.valueOf(index));
                 String selection = ImageContract.ImageEntry.IMAGE_ID + " = ?";
                 getContentResolver().delete(ImageContract.ImageEntry.CONTENT_URI, selection, new String[]{String.valueOf(index)});
-                (new File(images.get(position).getPath())).delete();
-
+                if ((new File(images.get(position).getPath())).delete())
+                    Toast.makeText(DownloadsGalleryActivity.this, R.string.image_deleted, Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(DownloadsGalleryActivity.this, R.string.image_not_deleted, Toast.LENGTH_SHORT).show();
             }
         }));
 

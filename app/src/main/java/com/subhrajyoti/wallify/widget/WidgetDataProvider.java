@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -14,21 +13,19 @@ import com.subhrajyoti.wallify.R;
 import com.subhrajyoti.wallify.db.ImageContract;
 import com.subhrajyoti.wallify.model.Image;
 
-import java.io.File;
 import java.util.ArrayList;
 
 @SuppressLint("NewApi")
-public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
+@SuppressWarnings("unchecked")
+class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
     private ArrayList<Image> mCollections;
-    private Cursor cursor;
 
-    Context mContext = null;
+    private Context mContext = null;
 
-    public WidgetDataProvider(Context context, Intent intent) {
+    WidgetDataProvider(Context context, Intent intent) {
         mContext = context;
         mCollections = new ArrayList();
-        Log.d("widget prov", "widget prov");
     }
 
     @Override
@@ -51,7 +48,6 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         RemoteViews mView = new RemoteViews(mContext.getPackageName(),
                 R.layout.widget_item);
         mView.setImageViewBitmap(R.id.widgetImage, BitmapFactory.decodeFile(mCollections.get(position).getPath()));
-        Log.d("URI",(Uri.fromFile(new File(mCollections.get(position).getPath()))).toString() );
 
         return mView;
     }
@@ -78,17 +74,18 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     private void initData() {
         mCollections.clear();
+        Cursor cursor;
         cursor = mContext.getContentResolver().query(ImageContract.ImageEntry.CONTENT_URI,
                 new String[]{ImageContract.ImageEntry.IMAGE_ID, ImageContract.ImageEntry.IMAGE_PATH},
                 null,
                 null,
                 null);
-        Log.d("Cursor", cursor.getCount()+"");
         assert cursor != null;
+        Log.d("Cursor", cursor.getCount()+"");
         while (cursor.moveToNext()){
             mCollections.add(new Image(cursor.getInt(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID)),cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH))));
-            Log.d("hello",cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH)));
         }
+        cursor.close();
     }
 
     @Override

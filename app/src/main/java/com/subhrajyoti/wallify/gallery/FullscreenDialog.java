@@ -19,17 +19,36 @@ import com.subhrajyoti.wallify.model.Image;
 import java.io.File;
 import java.util.ArrayList;
 
+
 public class FullscreenDialog extends DialogFragment {
     private String TAG = FullscreenDialog.class.getSimpleName();
     private ArrayList<Image> images;
     private ViewPager viewPager;
     private TextView countView;
+    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+
+        @Override
+        public void onPageSelected(int position) {
+            displayMetaInfo(position);
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+
+        }
+    };
     private int selectedPosition = 0;
 
     static FullscreenDialog newInstance() {
         return new FullscreenDialog();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,24 +77,6 @@ public class FullscreenDialog extends DialogFragment {
         displayMetaInfo(selectedPosition);
     }
 
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(int position) {
-            displayMetaInfo(position);
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
-    };
-
     private void displayMetaInfo(int position) {
         countView.setText((position + 1) + " of " + images.size());
     }
@@ -90,7 +91,7 @@ public class FullscreenDialog extends DialogFragment {
 
         private LayoutInflater layoutInflater;
 
-        public MyViewPagerAdapter() {
+        MyViewPagerAdapter() {
         }
 
         @Override

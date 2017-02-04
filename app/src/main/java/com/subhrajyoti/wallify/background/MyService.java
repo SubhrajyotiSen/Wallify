@@ -17,6 +17,7 @@ import com.subhrajyoti.wallify.R;
 
 import java.util.concurrent.ExecutionException;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class MyService extends Service {
 
     final private static String TAG = MyService.class.getSimpleName();
@@ -31,11 +32,9 @@ public class MyService extends Service {
             url = getString(R.string.grayscale_link);
         else
             url = getString(R.string.normal_link);
-        Log.v(TAG, "service called");
         mTarget = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-                Log.d(TAG, "Bitmap downloaded");
                 try {
                     status[0] = new SetWallpaperTask().execute(bitmap).get();
                 } catch (InterruptedException | ExecutionException e) {

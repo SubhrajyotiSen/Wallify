@@ -27,5 +27,7 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="widget_list_image_item">widget list image item</string>
+    <string name="image_deleted">Image deleted</string>
+    <string name="image_not_deleted">Unable to delete image</string>
 
 </resources>

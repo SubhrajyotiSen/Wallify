@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
 
 import com.subhrajyoti.wallify.MyApplication;
 import com.subhrajyoti.wallify.R;
@@ -40,13 +41,17 @@ public class SaveWallpaperTask extends AsyncTask<SaveWallpaperAsyncModel, Void,
                 if (CODE) {
                     filename = "backup";
                     File file = new File(Utils.getBackupImagePath());
+                    final String TAG = "SaveWallpaperTask";
                     if (file.exists())
-                        file.delete();
+                        if (file.delete())
+                            Log.d(TAG, "Deleted");
+                        else
+                            Log.d(TAG, "Deletion failed");
                 }
                 else
                     filename = formatter.format(now);
 
-                File sdImageMainDirectory = new File(root, filename + ".png");
+                File sdImageMainDirectory = new File(root, filename.concat(".png"));
                 fOut = new FileOutputStream(sdImageMainDirectory);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
                 fOut.flush();

@@ -10,12 +10,23 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+@SuppressWarnings("ConstantConditions")
 public class ImageProvider extends ContentProvider {
 
-    private static final UriMatcher uriMatcher = buildUriMatcher();
     private static final int NOTE_TABLE_ID = 100;
     private static final int NOTE_ROW_ID = 101;
+    private static final UriMatcher uriMatcher = buildUriMatcher();
     private DbHelper dbHelper;
+
+    static UriMatcher buildUriMatcher() {
+        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = ImageContract.CONTENT_AUTHORITY;
+
+        matcher.addURI(authority, ImageContract.PATH_NOTE, NOTE_TABLE_ID);
+        matcher.addURI(authority, ImageContract.PATH_NOTE + "/#", NOTE_ROW_ID);
+
+        return matcher;
+    }
 
     @Override
     public boolean onCreate() {
@@ -120,15 +131,5 @@ public class ImageProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return rows;
-    }
-
-    static UriMatcher buildUriMatcher() {
-        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = ImageContract.CONTENT_AUTHORITY;
-
-        matcher.addURI(authority, ImageContract.PATH_NOTE, NOTE_TABLE_ID);
-        matcher.addURI(authority, ImageContract.PATH_NOTE + "/#", NOTE_ROW_ID);
-
-        return matcher;
     }
 }

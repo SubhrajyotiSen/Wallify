@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.subhrajyoti.wallify.R;
@@ -16,7 +15,6 @@ public class WidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        Log.d("rec","rec");
 
     }
 
@@ -29,7 +27,6 @@ public class WidgetProvider extends AppWidgetProvider {
         }
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        Log.d("UPDATE","update");
     }
 
 
@@ -46,7 +43,6 @@ public class WidgetProvider extends AppWidgetProvider {
 
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
         mView.setRemoteAdapter(widgetId, R.id.widget_list, intent);
-        Log.d("initviews","initviews");
         return mView;
     }
 

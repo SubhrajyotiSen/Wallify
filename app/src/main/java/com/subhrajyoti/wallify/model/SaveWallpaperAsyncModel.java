@@ -20,15 +20,7 @@ public class SaveWallpaperAsyncModel {
         return bitmap;
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
-
     public boolean getBACKUP() {
         return BACKUP;
-    }
-
-    public void setBACKUP(boolean BACKUP) {
-        this.BACKUP = BACKUP;
     }
 }

@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.subhrajyoti.wallify.MyApplication;
 
@@ -17,7 +16,6 @@ public class MyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.v(TAG, "receiver  called");
         if( PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).getBoolean("daily", false)) {
             Intent intent1 = new Intent(context, MyService.class);
             context.startService(intent1);

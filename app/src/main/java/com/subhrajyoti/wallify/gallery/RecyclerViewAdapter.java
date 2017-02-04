@@ -13,11 +13,11 @@ import com.subhrajyoti.wallify.model.Image;
 import java.io.File;
 import java.util.ArrayList;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<MainViewHolder> {
+class RecyclerViewAdapter extends RecyclerView.Adapter<MainViewHolder> {
 
     private ArrayList<Image> images;
 
-    public RecyclerViewAdapter(ArrayList<Image> arrayList) {
+    RecyclerViewAdapter(ArrayList<Image> arrayList) {
         images = arrayList;
     }
 
