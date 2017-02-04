@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.subhrajyoti.wallify.R;
 import com.subhrajyoti.wallify.db.ImageContract;
 import com.subhrajyoti.wallify.model.Image;
@@ -27,6 +28,8 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
     private RecyclerViewAdapter recyclerViewAdapter;
     private GridLayoutManager linearLayoutManager;
     private ArrayList<Image> images;
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private final String ANALYTICS_ID = "Gallery";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         images = new ArrayList<>();
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         recyclerViewAdapter = new RecyclerViewAdapter(images);
         linearLayoutManager = new GridLayoutManager(this, 2);
@@ -72,6 +77,12 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
 
             }
         }));
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, ANALYTICS_ID);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, ANALYTICS_ID);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Gallery opened");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     @Override

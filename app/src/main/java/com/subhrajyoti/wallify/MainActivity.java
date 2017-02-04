@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -51,6 +52,8 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
     private Bitmap oldWallpaper;
     boolean grayscale;
     final private int REQUEST_STORAGE_PERM = 11;
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private final String ANALYTICS_ID = "Main";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,8 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.open, R.string.close);
@@ -155,6 +160,12 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
 
                     }
                 });
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, ANALYTICS_ID);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, ANALYTICS_ID);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "New Image");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     public void saveImage() throws ExecutionException, InterruptedException {
@@ -164,6 +175,12 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
             Toast.makeText(MainActivity.this, R.string.wallpaper_save_success, Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(MainActivity.this, R.string.wallpaper_save_error, Toast.LENGTH_SHORT).show();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, ANALYTICS_ID);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, ANALYTICS_ID);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Save image");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     public void setWallpaper() throws ExecutionException, InterruptedException {
@@ -178,6 +195,12 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
             Toast.makeText(this, R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
         SaveWallpaperAsyncModel saveWallpaperAsyncModel = new SaveWallpaperAsyncModel(oldWallpaper, true);
         (new SaveWallpaperTask()).execute(saveWallpaperAsyncModel);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, ANALYTICS_ID);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, ANALYTICS_ID);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Set wallpaper");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     public void restoreWallpaper() throws ExecutionException, InterruptedException {
