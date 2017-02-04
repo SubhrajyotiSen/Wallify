@@ -10,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.polaric.colorful.CActivity;
@@ -19,6 +21,7 @@ public class SettingsActivity extends CActivity {
 
     private static FirebaseAnalytics mFirebaseAnalytics;
     private static final String ANALYTICS_ID = "Settings";
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,9 @@ public class SettingsActivity extends CActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, new PrefsFragment()).commit();
