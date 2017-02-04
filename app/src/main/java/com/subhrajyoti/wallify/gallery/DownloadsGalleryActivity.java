@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,10 +17,12 @@ import com.subhrajyoti.wallify.R;
 import com.subhrajyoti.wallify.db.ImageContract;
 import com.subhrajyoti.wallify.model.Image;
 
+import org.polaric.colorful.CActivity;
+
 import java.io.File;
 import java.util.ArrayList;
 
-public class DownloadsGalleryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DownloadsGalleryActivity extends CActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView recyclerView;
     private Toolbar toolbar;
@@ -37,7 +38,12 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
         setContentView(R.layout.activity_fav);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        assert toolbar != null;
+        toolbar.setTitle("Downloads");
+        setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         images = new ArrayList<>();
 
@@ -48,7 +54,6 @@ public class DownloadsGalleryActivity extends AppCompatActivity implements Loade
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        setSupportActionBar(toolbar);
         getSupportLoaderManager().initLoader(0, null,this );
 
 
