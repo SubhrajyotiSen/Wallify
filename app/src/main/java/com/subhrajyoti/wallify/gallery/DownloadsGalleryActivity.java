@@ -83,6 +83,9 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
                     Toast.makeText(DownloadsGalleryActivity.this, R.string.image_deleted, Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(DownloadsGalleryActivity.this, R.string.image_not_deleted, Toast.LENGTH_SHORT).show();
+                images.remove(position);
+                recyclerViewAdapter.notifyDataSetChanged();
+                Log.d("SIZE", images.size() + "");
             }
         }));
 
@@ -102,6 +105,7 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.d("Count",String.valueOf(data.getCount()));
+        images.clear();
         while (data.moveToNext())
             images.add(new Image(
                             data.getInt(data.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID)),
