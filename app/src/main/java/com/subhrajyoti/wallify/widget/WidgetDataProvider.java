@@ -80,8 +80,8 @@ class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
                 null,
                 null);
         assert cursor != null;
-        while (cursor.moveToNext()){
-            mCollections.add(new Image(cursor.getInt(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID)),cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH))));
+        while (cursor.moveToNext()) {
+            mCollections.add(new Image(cursor.getInt(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID)), cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH))));
         }
         cursor.close();
     }

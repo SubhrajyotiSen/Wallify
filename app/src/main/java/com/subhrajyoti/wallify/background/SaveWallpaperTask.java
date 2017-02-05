@@ -31,12 +31,12 @@ public class SaveWallpaperTask extends AsyncTask<SaveWallpaperAsyncModel, Void,
         Date now = new Date();
         boolean status = true;
         Context context = MyApplication.getContext();
-        OutputStream fOut ;
+        OutputStream fOut;
         try {
 
             File root = new File(Environment.getExternalStorageDirectory()
                     + File.separator + context.getString(R.string.app_name) + File.separator);
-            if(root.mkdirs() || root.exists()) {
+            if (root.mkdirs() || root.exists()) {
                 String filename;
                 if (CODE) {
                     filename = "backup";
@@ -47,8 +47,7 @@ public class SaveWallpaperTask extends AsyncTask<SaveWallpaperAsyncModel, Void,
                             Log.d(TAG, "Deleted");
                         else
                             Log.d(TAG, "Deletion failed");
-                }
-                else
+                } else
                     filename = formatter.format(now);
 
                 File sdImageMainDirectory = new File(root, filename.concat(".png"));
@@ -58,7 +57,7 @@ public class SaveWallpaperTask extends AsyncTask<SaveWallpaperAsyncModel, Void,
                 fOut.close();
                 ContentValues values = new ContentValues();
                 values.put(ImageContract.ImageEntry.IMAGE_PATH, sdImageMainDirectory.toString());
-                MyApplication.getContext().getContentResolver().insert(ImageContract.ImageEntry.CONTENT_URI,values);
+                MyApplication.getContext().getContentResolver().insert(ImageContract.ImageEntry.CONTENT_URI, values);
             }
         } catch (Exception e) {
             status = false;

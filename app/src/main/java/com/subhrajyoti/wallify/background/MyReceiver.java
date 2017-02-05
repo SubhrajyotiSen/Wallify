@@ -14,7 +14,7 @@ public class MyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if( PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).getBoolean("daily", false)) {
+        if (PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).getBoolean("daily", false)) {
             Intent intent1 = new Intent(context, MyService.class);
             context.startService(intent1);
         }

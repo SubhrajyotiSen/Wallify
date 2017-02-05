@@ -58,7 +58,7 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        getSupportLoaderManager().initLoader(0, null,this );
+        getSupportLoaderManager().initLoader(0, null, this);
 
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -108,12 +108,12 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d("Count",String.valueOf(data.getCount()));
+        Log.d("Count", String.valueOf(data.getCount()));
         images.clear();
         while (data.moveToNext())
             images.add(new Image(
-                            data.getInt(data.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID)),
-                            data.getString(data.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH))));
+                    data.getInt(data.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID)),
+                    data.getString(data.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH))));
         recyclerViewAdapter.notifyDataSetChanged();
     }
 

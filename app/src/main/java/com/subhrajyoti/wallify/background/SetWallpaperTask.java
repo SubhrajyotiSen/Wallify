@@ -11,7 +11,7 @@ public class SetWallpaperTask extends AsyncTask<Bitmap, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Bitmap... params) {
-        boolean status= true;
+        boolean status = true;
         final Bitmap bitmap = params[0];
         try {
             Utils.getWallpaperManager().setBitmap(bitmap);

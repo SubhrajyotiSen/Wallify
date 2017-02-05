@@ -50,10 +50,11 @@
             android:authorities="com.subhrajyoti.wallify.app"
             android:exported="true" />
 
-        <activity android:name=".gallery.DownloadsGalleryActivity"
+        <activity
+            android:name=".gallery.DownloadsGalleryActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".widget.WidgetService"

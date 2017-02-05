@@ -40,7 +40,7 @@ import org.polaric.colorful.CActivity;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends CActivity  implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends CActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     final private int REQUEST_STORAGE_PERM = 11;
     private final String ANALYTICS_ID = "Main";
@@ -78,13 +78,13 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
         if (!isStorageGranted())
             requestPermission();
         File file = new File(Utils.getBackupImagePath());
-        if (file.exists()){
+        if (file.exists()) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
             oldWallpaper = BitmapFactory.decodeFile(file.toString(), options);
         }
 
-        if ((savedInstanceState==null))
+        if ((savedInstanceState == null))
             loadImage();
         randomFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,7 +212,7 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
         }
     }
 
-    private void generateCache(){
+    private void generateCache() {
         imageView.destroyDrawingCache();
         imageView.buildDrawingCache();
         bitmap = imageView.getDrawingCache();

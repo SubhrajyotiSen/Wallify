@@ -11,6 +11,10 @@ public class MyApplication extends Application {
 
     private static Context context;
 
+    public static Context getContext() {
+        return MyApplication.context;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -26,9 +30,5 @@ public class MyApplication extends Application {
                 .apply();
 
         Colorful.init(this);
-    }
-
-    public static Context getContext(){
-        return MyApplication.context;
     }
 }

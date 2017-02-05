@@ -40,10 +40,10 @@ public class ImageProvider extends ContentProvider {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor;
 
-        switch (uriMatcher.match(uri)){
+        switch (uriMatcher.match(uri)) {
 
             case NOTE_TABLE_ID:
-                cursor = db.query(ImageContract.ImageEntry.TABLE_NAME, strings, s , strings1, null, null, s1);
+                cursor = db.query(ImageContract.ImageEntry.TABLE_NAME, strings, s, strings1, null, null, s1);
                 break;
 
             case NOTE_ROW_ID:
@@ -56,14 +56,14 @@ public class ImageProvider extends ContentProvider {
 
         }
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
-        return  cursor;
+        return cursor;
     }
 
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
 
-        switch (uriMatcher.match(uri)){
+        switch (uriMatcher.match(uri)) {
 
             case NOTE_ROW_ID:
                 return ImageContract.ImageEntry.CONTENT_ITEM_TYPE;
@@ -81,7 +81,7 @@ public class ImageProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
 
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long _id ;
+        long _id;
         Uri returnUri;
 
         if (uriMatcher.match(uri) == NOTE_TABLE_ID) {

@@ -44,7 +44,6 @@ public class SettingsActivity extends CActivity {
     }
 
 
-
     public static class PrefsFragment extends PreferenceFragment {
 
         @Override

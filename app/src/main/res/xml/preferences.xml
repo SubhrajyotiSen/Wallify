@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="Image Settings">
-    <CheckBoxPreference android:title="Grayscale"
-        android:defaultValue="false"
-        android:summary="Wallpapers will be displayed in grayscale mode."
-        android:key="grayscale" />
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="Wallpaper Options">
+    <PreferenceCategory android:title="Image Settings">
         <CheckBoxPreference
-            android:title="Daily Wallpaper"
             android:defaultValue="false"
+            android:key="grayscale"
+            android:summary="Wallpapers will be displayed in grayscale mode."
+            android:title="Grayscale" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Wallpaper Options">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="daily"
             android:summary="Wallify will automatically set a random wallpaper every day "
-            android:key="daily"/>
+            android:title="Daily Wallpaper" />
     </PreferenceCategory>
-    <PreferenceCategory
-        android:title="Theme Options">
+    <PreferenceCategory android:title="Theme Options">
         <CheckBoxPreference
-            android:title="Dark Mode"
             android:defaultValue="false"
+            android:key="dark"
             android:summary="Use Dark Mode throughout the app "
-            android:key="dark"/>
+            android:title="Dark Mode" />
 
     </PreferenceCategory>
-    <PreferenceCategory
-        android:title="Extras">
+    <PreferenceCategory android:title="Extras">
         <Preference
-            android:title="About"
-            android:key="about"/>
+            android:key="about"
+            android:title="About" />
     </PreferenceCategory>
-
-
 
 
 </PreferenceScreen>

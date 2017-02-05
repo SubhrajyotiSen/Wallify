@@ -102,7 +102,7 @@ public class FullscreenDialog extends DialogFragment {
 
             Image image = images.get(position);
 
-            ImageView imageView = (ImageView) view.findViewById(R.id.imageView) ;
+            ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
 
 
             imageView.setImageURI(Uri.fromFile(new File(image.getPath())));
