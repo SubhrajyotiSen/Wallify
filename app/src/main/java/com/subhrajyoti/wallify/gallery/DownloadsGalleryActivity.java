@@ -1,5 +1,6 @@
 package com.subhrajyoti.wallify.gallery;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -33,6 +35,13 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
     private ArrayList<Image> images;
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    public static int calculateNoOfColumns(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (dpWidth / 180);
+        return noOfColumns;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +50,7 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         assert toolbar != null;
-        toolbar.setTitle("Downloads");
+        toolbar.setTitle(getString(R.string.downloads));
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -51,7 +60,7 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         recyclerViewAdapter = new RecyclerViewAdapter(images);
-        linearLayoutManager = new GridLayoutManager(this, 2);
+        linearLayoutManager = new GridLayoutManager(this, calculateNoOfColumns(this));
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -112,7 +121,6 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
                             data.getString(data.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH))));
         recyclerViewAdapter.notifyDataSetChanged();
     }
-
 
     @Override
     public void onLoaderReset(Loader loader) {

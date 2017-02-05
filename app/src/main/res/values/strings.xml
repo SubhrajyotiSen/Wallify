@@ -29,5 +29,8 @@
     <string name="widget_list_image_item">widget list image item</string>
     <string name="image_deleted">Image deleted</string>
     <string name="image_not_deleted">Unable to delete image</string>
+    <string name="main_wallpaper">Main wallpaper</string>
+    <string name="random_fab">random FAB</string>
+    <string name="set_fab">set FAB</string>
 
 </resources>

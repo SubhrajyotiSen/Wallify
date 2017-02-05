@@ -19,8 +19,8 @@ import org.polaric.colorful.Colorful;
 
 public class SettingsActivity extends CActivity {
 
-    private static FirebaseAnalytics mFirebaseAnalytics;
     private static final String ANALYTICS_ID = "Settings";
+    private static FirebaseAnalytics mFirebaseAnalytics;
     private AdView adView;
 
     @Override
@@ -29,7 +29,7 @@ public class SettingsActivity extends CActivity {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         assert toolbar != null;
-        toolbar.setTitle("Settings");
+        toolbar.setTitle(getString(R.string.settings));
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
