@@ -25,21 +25,15 @@ import org.polaric.colorful.CActivity;
 import java.io.File;
 import java.util.ArrayList;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class DownloadsGalleryActivity extends CActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private final String ANALYTICS_ID = "Gallery";
-    private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
-    private GridLayoutManager linearLayoutManager;
     private ArrayList<Image> images;
-    private FirebaseAnalytics mFirebaseAnalytics;
 
     public static int calculateNoOfColumns(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int noOfColumns = (int) (dpWidth / 180);
-        return noOfColumns;
+        return (int) (dpWidth / 180);
     }
 
     @Override
@@ -47,7 +41,7 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fav);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         assert toolbar != null;
         toolbar.setTitle(getString(R.string.downloads));
@@ -57,10 +51,10 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
 
         images = new ArrayList<>();
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         recyclerViewAdapter = new RecyclerViewAdapter(images);
-        linearLayoutManager = new GridLayoutManager(this, calculateNoOfColumns(this));
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(this, calculateNoOfColumns(this));
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -99,6 +93,7 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
         }));
 
         Bundle bundle = new Bundle();
+        String ANALYTICS_ID = "Gallery";
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, ANALYTICS_ID);
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, ANALYTICS_ID);
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Gallery opened");

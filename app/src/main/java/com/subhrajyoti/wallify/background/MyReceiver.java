@@ -9,8 +9,6 @@ import com.subhrajyoti.wallify.MyApplication;
 
 public class MyReceiver extends BroadcastReceiver {
 
-    final private static String TAG = MyReceiver.class.getSimpleName();
-
     public MyReceiver() {
     }
 

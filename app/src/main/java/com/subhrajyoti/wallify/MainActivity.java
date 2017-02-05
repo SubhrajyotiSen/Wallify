@@ -42,18 +42,15 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends CActivity  implements NavigationView.OnNavigationItemSelectedListener{
 
-    private FloatingActionButton randomFab;
-    private FloatingActionButton setFab;
+    final private int REQUEST_STORAGE_PERM = 11;
+    private final String ANALYTICS_ID = "Main";
+    boolean grayscale;
     private ImageView imageView;
     private ProgressBar progressBar;
-    private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private Bitmap bitmap;
     private Bitmap oldWallpaper;
-    boolean grayscale;
-    final private int REQUEST_STORAGE_PERM = 11;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private final String ANALYTICS_ID = "Main";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +60,11 @@ public class MainActivity extends CActivity  implements NavigationView.OnNavigat
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        randomFab = (FloatingActionButton) findViewById(R.id.randomFab);
-        setFab = (FloatingActionButton) findViewById(R.id.setFab);
+        FloatingActionButton randomFab = (FloatingActionButton) findViewById(R.id.randomFab);
+        FloatingActionButton setFab = (FloatingActionButton) findViewById(R.id.setFab);
         imageView = (ImageView) findViewById(R.id.imageView);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);

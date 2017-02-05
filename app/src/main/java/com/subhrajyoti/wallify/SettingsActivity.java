@@ -21,7 +21,6 @@ public class SettingsActivity extends CActivity {
 
     private static final String ANALYTICS_ID = "Settings";
     private static FirebaseAnalytics mFirebaseAnalytics;
-    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class SettingsActivity extends CActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        adView = (AdView) findViewById(R.id.adView);
+        AdView adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 

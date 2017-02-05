@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -81,7 +80,6 @@ class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
                 null,
                 null);
         assert cursor != null;
-        Log.d("Cursor", cursor.getCount()+"");
         while (cursor.moveToNext()){
             mCollections.add(new Image(cursor.getInt(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID)),cursor.getString(cursor.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH))));
         }
