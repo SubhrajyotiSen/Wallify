@@ -265,40 +265,42 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        final int id = item.getItemId();
+        DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                try {
+                    restoreWallpaper();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        };
         switch (id) {
             case R.id.restore:
-                drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-                    @Override
-                    public void onDrawerSlide(View drawerView, float slideOffset) {
-
-                    }
-
-                    @Override
-                    public void onDrawerOpened(View drawerView) {
-
-                    }
-
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        try {
-                            restoreWallpaper();
-                        } catch (ExecutionException | InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onDrawerStateChanged(int newState) {
-
-                    }
-                });
-
+                drawerLayout.addDrawerListener(drawerListener);
                 break;
             case R.id.settings:
+                drawerLayout.removeDrawerListener(drawerListener);
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
             case R.id.downloads:
+                drawerLayout.removeDrawerListener(drawerListener);
                 startActivity(new Intent(MainActivity.this, DownloadsGalleryActivity.class));
                 break;
 
