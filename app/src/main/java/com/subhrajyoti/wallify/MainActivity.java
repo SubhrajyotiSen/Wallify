@@ -51,6 +51,7 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     private Bitmap bitmap;
     private Bitmap oldWallpaper;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private SetWallpaperTask setWallpaperTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,9 +184,13 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     public void setWallpaper() throws ExecutionException, InterruptedException {
         generateCache();
 
+        if (setWallpaperTask != null)
+            setWallpaperTask.cancel(true);
+
         oldWallpaper = ((BitmapDrawable) Utils.getWallpaperManager().getDrawable()).getBitmap();
 
-        boolean status = new SetWallpaperTask().execute(bitmap).get();
+        setWallpaperTask = new SetWallpaperTask();
+        boolean status = setWallpaperTask.execute(bitmap).get();
         if (status)
             Toast.makeText(this, R.string.wallpaper_set_success, Toast.LENGTH_SHORT).show();
         else
