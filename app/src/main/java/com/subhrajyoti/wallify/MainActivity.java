@@ -82,21 +82,13 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
 
         if ((savedInstanceState == null))
             loadImage();
-        randomFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadImage();
-            }
-        });
-        setFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    setWallpaper();
-                } catch (ExecutionException | InterruptedException e) {
-                    Toast.makeText(MainActivity.this, R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
+        randomFab.setOnClickListener(v -> loadImage());
+        setFab.setOnClickListener(v -> {
+            try {
+                setWallpaper();
+            } catch (ExecutionException | InterruptedException e) {
+                Toast.makeText(MainActivity.this, R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             }
         });
 
@@ -222,11 +214,7 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
             return;
         }
 
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                finish();
-            }
-        };
+        DialogInterface.OnClickListener listener = (dialog, id) -> finish();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.app_name))

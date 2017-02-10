@@ -26,6 +26,10 @@ android {
             signingConfig signingConfigs.config
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     return void
 }
 allprojects {
@@ -43,3 +47,4 @@ dependencies {
     compile 'com.github.garretyoder:Colorful:1.1'
     testCompile 'junit:junit:4.12'
 }
+apply plugin: 'me.tatarka.retrolambda'

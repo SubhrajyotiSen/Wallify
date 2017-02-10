@@ -20,3 +20,4 @@
 ## https://square.github.io/picasso/ ##
 
 -dontwarn com.squareup.okhttp.**
+-dontwarn java.lang.invoke.*
