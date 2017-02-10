@@ -63,6 +63,7 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     private Bitmap bitmap;
     private Bitmap oldWallpaper;
     private SetWallpaperTask setWallpaperTask;
+    private boolean isNew = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +132,7 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     }
 
     public void loadImage() {
-
+        isNew = true;
         progressBar.setVisibility(View.VISIBLE);
         String string;
         grayscale = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("grayscale", false);
@@ -159,12 +160,15 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
 
     public void saveImage() throws ExecutionException, InterruptedException {
         generateCache();
+        if (!isNew) {
+            return;
+        }
         boolean status = new SaveWallpaperTask().execute(new SaveWallpaperAsyncModel(bitmap, false)).get();
         if (status)
             Toast.makeText(MainActivity.this, R.string.wallpaper_save_success, Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(MainActivity.this, R.string.wallpaper_save_error, Toast.LENGTH_SHORT).show();
-
+        isNew = false;
     }
 
     public void setWallpaper() throws ExecutionException, InterruptedException {
