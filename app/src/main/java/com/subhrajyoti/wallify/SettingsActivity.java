@@ -11,13 +11,19 @@ import android.view.View;
 import org.polaric.colorful.CActivity;
 import org.polaric.colorful.Colorful;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SettingsActivity extends CActivity {
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         assert toolbar != null;
         toolbar.setTitle(getString(R.string.settings));
         setSupportActionBar(toolbar);

@@ -24,8 +24,15 @@ import org.polaric.colorful.CActivity;
 import java.io.File;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DownloadsGalleryActivity extends CActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
     private ArrayList<Image> images;
 
@@ -40,8 +47,8 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fav);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+
         assert toolbar != null;
         toolbar.setTitle(getString(R.string.downloads));
         setSupportActionBar(toolbar);

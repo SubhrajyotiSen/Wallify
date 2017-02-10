@@ -6,14 +6,17 @@ import android.widget.ImageView;
 
 import com.subhrajyoti.wallify.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 class MainViewHolder extends RecyclerView.ViewHolder {
 
+    @BindView(R.id.thumbnail)
     ImageView thumbnail;
 
     MainViewHolder(View itemView) {
         super(itemView);
-        thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
-
+        ButterKnife.bind(this, itemView);
     }
 
 }

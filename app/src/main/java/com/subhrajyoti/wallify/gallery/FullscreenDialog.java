@@ -19,12 +19,18 @@ import com.subhrajyoti.wallify.model.Image;
 import java.io.File;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 
 public class FullscreenDialog extends DialogFragment {
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+    @BindView(R.id.countView)
+    TextView countView;
     private String TAG = FullscreenDialog.class.getSimpleName();
     private ArrayList<Image> images;
-    private ViewPager viewPager;
-    private TextView countView;
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -42,6 +48,7 @@ public class FullscreenDialog extends DialogFragment {
 
         }
     };
+    private Unbinder unbinder;
     private int selectedPosition = 0;
 
     static FullscreenDialog newInstance() {
@@ -60,8 +67,7 @@ public class FullscreenDialog extends DialogFragment {
         Log.e(TAG, "position: " + selectedPosition);
         Log.e(TAG, "images size: " + images.size());
 
-        viewPager = (ViewPager) v.findViewById(R.id.viewPager);
-        countView = (TextView) v.findViewById(R.id.countView);
+        unbinder = ButterKnife.bind(this, v);
 
         MyViewPagerAdapter viewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(viewPagerAdapter);
@@ -87,8 +93,16 @@ public class FullscreenDialog extends DialogFragment {
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
     public class MyViewPagerAdapter extends PagerAdapter {
 
+        @BindView(R.id.imageView)
+        ImageView imageView;
         private LayoutInflater layoutInflater;
 
         MyViewPagerAdapter() {
@@ -102,8 +116,7 @@ public class FullscreenDialog extends DialogFragment {
 
             Image image = images.get(position);
 
-            ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-
+            ButterKnife.bind(this, view);
 
             imageView.setImageURI(Uri.fromFile(new File(image.getPath())));
 
