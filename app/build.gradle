@@ -41,9 +41,5 @@ dependencies {
     compile 'com.android.support:design:25.1.1'
     compile 'com.squareup.picasso:picasso:2.5.1'
     compile 'com.github.garretyoder:Colorful:1.1'
-    compile 'com.google.firebase:firebase-core:10.0.1'
-    compile 'com.google.firebase:firebase-ads:10.0.1'
     testCompile 'junit:junit:4.12'
 }
-
-apply plugin: 'com.google.gms.google-services'

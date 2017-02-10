@@ -10,17 +10,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import org.polaric.colorful.CActivity;
 import org.polaric.colorful.Colorful;
 
 public class SettingsActivity extends CActivity {
-
-    private static final String ANALYTICS_ID = "Settings";
-    private static FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +26,6 @@ public class SettingsActivity extends CActivity {
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        AdView adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, new PrefsFragment()).commit();
@@ -78,11 +67,6 @@ public class SettingsActivity extends CActivity {
                     getActivity().finish();
                     startActivity(intent);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, ANALYTICS_ID);
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, ANALYTICS_ID);
-                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Dark mode changed");
-                    mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
                     return true;
                 }
             });

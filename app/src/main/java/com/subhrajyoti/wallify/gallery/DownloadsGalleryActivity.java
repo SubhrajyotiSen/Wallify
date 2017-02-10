@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.subhrajyoti.wallify.R;
 import com.subhrajyoti.wallify.db.ImageContract;
 import com.subhrajyoti.wallify.model.Image;
@@ -50,8 +49,6 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         images = new ArrayList<>();
-
-        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         recyclerViewAdapter = new RecyclerViewAdapter(images);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(this, calculateNoOfColumns(this));
@@ -92,12 +89,6 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
             }
         }));
 
-        Bundle bundle = new Bundle();
-        String ANALYTICS_ID = "Gallery";
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, ANALYTICS_ID);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, ANALYTICS_ID);
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Gallery opened");
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     @Override
