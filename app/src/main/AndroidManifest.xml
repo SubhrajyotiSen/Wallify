@@ -43,11 +43,6 @@
             android:enabled="true"
             android:exported="true" />
 
-        <provider
-            android:name=".db.ImageProvider"
-            android:authorities="com.subhrajyoti.wallify.app"
-            android:exported="true" />
-
         <activity
             android:name=".gallery.DownloadsGalleryActivity"
             android:parentActivityName=".MainActivity"

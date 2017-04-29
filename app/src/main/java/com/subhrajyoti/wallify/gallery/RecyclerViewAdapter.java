@@ -8,16 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.subhrajyoti.wallify.R;
-import com.subhrajyoti.wallify.model.Image;
 
 import java.io.File;
 import java.util.ArrayList;
 
 class RecyclerViewAdapter extends RecyclerView.Adapter<MainViewHolder> {
 
-    private ArrayList<Image> images;
+    private ArrayList<String> images;
 
-    RecyclerViewAdapter(ArrayList<Image> arrayList) {
+    RecyclerViewAdapter(ArrayList<String> arrayList) {
         images = arrayList;
     }
 
@@ -34,7 +33,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<MainViewHolder> {
 
     @Override
     public void onBindViewHolder(MainViewHolder holder, int position) {
-        holder.thumbnail.setImageURI(Uri.fromFile(new File(images.get(position).getPath())));
+        holder.thumbnail.setImageURI(Uri.fromFile(new File(images.get(position))));
 
     }
 

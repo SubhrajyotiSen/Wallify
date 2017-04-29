@@ -1,23 +1,18 @@
 package com.subhrajyoti.wallify.gallery;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.subhrajyoti.wallify.R;
-import com.subhrajyoti.wallify.db.ImageContract;
-import com.subhrajyoti.wallify.model.Image;
 
 import org.polaric.colorful.CActivity;
 
@@ -27,14 +22,14 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DownloadsGalleryActivity extends CActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DownloadsGalleryActivity extends CActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
-    private ArrayList<Image> images;
+    private ArrayList<String> images;
 
     public static int calculateNoOfColumns(Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -62,7 +57,7 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        getSupportLoaderManager().initLoader(0, null, this);
+        loadImages();
 
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
@@ -82,40 +77,43 @@ public class DownloadsGalleryActivity extends CActivity implements LoaderManager
 
             @Override
             public void onLongClick(View view, int position) {
-                int index = images.get(position).getId();
-                Log.d("TAG", String.valueOf(index));
-                String selection = ImageContract.ImageEntry.IMAGE_ID + " = ?";
-                getContentResolver().delete(ImageContract.ImageEntry.CONTENT_URI, selection, new String[]{String.valueOf(index)});
-                if ((new File(images.get(position).getPath())).delete())
-                    Toast.makeText(DownloadsGalleryActivity.this, R.string.image_deleted, Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(DownloadsGalleryActivity.this, R.string.image_not_deleted, Toast.LENGTH_SHORT).show();
-                images.remove(position);
-                recyclerViewAdapter.notifyDataSetChanged();
-                Log.d("SIZE", images.size() + "");
+                File file = new File(images.get(position));
+                AlertDialog.Builder builder = new AlertDialog.Builder(DownloadsGalleryActivity.this);
+                builder.setTitle(R.string.delete_image);
+                builder.setMessage(R.string.delete_image_warning);
+
+
+                builder.setNegativeButton(R.string.no,
+                        (dialog, which) -> {
+                        });
+
+                builder.setPositiveButton(R.string.yes,
+                        (dialog, which) -> {
+                            if (file.delete()) {
+                                images.remove(position);
+                                recyclerViewAdapter.notifyDataSetChanged();
+                                Toast.makeText(DownloadsGalleryActivity.this, R.string.image_delete_confirm, Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                                Toast.makeText(DownloadsGalleryActivity.this, R.string.image_delete_error, Toast.LENGTH_SHORT).show();
+
+                        });
+
+                AlertDialog dialog = builder.create();
+                // display dialog
+                dialog.show();
             }
         }));
 
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(DownloadsGalleryActivity.this, ImageContract.ImageEntry.CONTENT_URI, null, null,
-                null, null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d("Count", String.valueOf(data.getCount()));
-        images.clear();
-        while (data.moveToNext())
-            images.add(new Image(
-                    data.getInt(data.getColumnIndex(ImageContract.ImageEntry.IMAGE_ID)),
-                    data.getString(data.getColumnIndex(ImageContract.ImageEntry.IMAGE_PATH))));
+    private void loadImages() {
+        File root = new File(Environment.getExternalStorageDirectory()
+                + File.separator + getString(R.string.app_name) + File.separator);
+        if ( root.isDirectory()){
+            for (File file : root.listFiles())
+                images.add(file.getAbsoluteFile().toString());
+        }
         recyclerViewAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onLoaderReset(Loader loader) {
     }
 }

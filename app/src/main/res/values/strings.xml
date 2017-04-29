@@ -31,5 +31,11 @@
     <string name="main_wallpaper">Main wallpaper</string>
     <string name="random_fab">random FAB</string>
     <string name="set_fab">set FAB</string>
+    <string name="delete_image">Delete Image</string>
+    <string name="delete_image_warning">Are you sure you want to delete this image?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="image_delete_confirm">Image deleted</string>
+    <string name="image_delete_error">Error while deleting image</string>
 
 </resources>

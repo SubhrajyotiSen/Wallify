@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.subhrajyoti.wallify.R;
-import com.subhrajyoti.wallify.model.Image;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class FullscreenDialog extends DialogFragment {
     @BindView(R.id.countView)
     TextView countView;
     private String TAG = FullscreenDialog.class.getSimpleName();
-    private ArrayList<Image> images;
+    private ArrayList<String> images;
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -61,7 +60,7 @@ public class FullscreenDialog extends DialogFragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_image_slider, container, false);
 
-        images = (ArrayList<Image>) getArguments().getSerializable("images");
+        images = (ArrayList<String>) getArguments().getSerializable("images");
         selectedPosition = getArguments().getInt("position");
 
         Log.e(TAG, "position: " + selectedPosition);
@@ -114,11 +113,10 @@ public class FullscreenDialog extends DialogFragment {
             layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(R.layout.image_fullscreen_preview, container, false);
 
-            Image image = images.get(position);
 
             ButterKnife.bind(this, view);
 
-            imageView.setImageURI(Uri.fromFile(new File(image.getPath())));
+            imageView.setImageURI(Uri.fromFile(new File(images.get(position))));
 
             container.addView(view);
 
