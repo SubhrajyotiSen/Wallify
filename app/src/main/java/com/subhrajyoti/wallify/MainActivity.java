@@ -23,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
@@ -97,7 +96,7 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
             try {
                 setWallpaper();
             } catch (ExecutionException | InterruptedException e) {
-                Toast.makeText(MainActivity.this, R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
+                Utils.Toaster(R.string.wallpaper_set_error);
                 e.printStackTrace();
             }
         });
@@ -165,9 +164,9 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
         }
         boolean status = new SaveWallpaperTask().execute(new SaveWallpaperAsyncModel(bitmap, false)).get();
         if (status)
-            Toast.makeText(MainActivity.this, R.string.wallpaper_save_success, Toast.LENGTH_SHORT).show();
+            Utils.Toaster(R.string.wallpaper_save_success);
         else
-            Toast.makeText(MainActivity.this, R.string.wallpaper_save_error, Toast.LENGTH_SHORT).show();
+            Utils.Toaster(R.string.wallpaper_save_error);
         isNew = false;
     }
 
@@ -182,9 +181,9 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
         setWallpaperTask = new SetWallpaperTask();
         boolean status = setWallpaperTask.execute(bitmap).get();
         if (status)
-            Toast.makeText(this, R.string.wallpaper_set_success, Toast.LENGTH_SHORT).show();
+            Utils.Toaster(R.string.wallpaper_set_success);
         else
-            Toast.makeText(this, R.string.wallpaper_set_error, Toast.LENGTH_SHORT).show();
+            Utils.Toaster(R.string.wallpaper_set_error);
         SaveWallpaperAsyncModel saveWallpaperAsyncModel = new SaveWallpaperAsyncModel(oldWallpaper, true);
         (new SaveWallpaperTask()).execute(saveWallpaperAsyncModel);
 
@@ -192,12 +191,12 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
 
     public void restoreWallpaper() throws ExecutionException, InterruptedException {
         if (oldWallpaper == null)
-            Toast.makeText(this, R.string.no_restore, Toast.LENGTH_SHORT).show();
+            Utils.Toaster(R.string.no_restore);
         else {
             if (new SetWallpaperTask().execute(oldWallpaper).get())
-                Toast.makeText(this, R.string.restore_success, Toast.LENGTH_SHORT).show();
+                Utils.Toaster(R.string.restore_success);
             else
-                Toast.makeText(this, R.string.restore_error, Toast.LENGTH_SHORT).show();
+                Utils.Toaster(R.string.restore_error);
             oldWallpaper = null;
         }
     }
