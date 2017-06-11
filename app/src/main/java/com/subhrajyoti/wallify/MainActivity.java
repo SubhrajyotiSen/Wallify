@@ -21,9 +21,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -46,7 +46,7 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     final private int REQUEST_STORAGE_PERM = 11;
     boolean grayscale;
     @BindView(R.id.imageView)
-    ImageView imageView;
+    PhotoView imageView;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.drawer_layout)
