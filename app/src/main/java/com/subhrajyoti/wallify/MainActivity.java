@@ -7,11 +7,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -27,20 +24,18 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.github.chrisbanes.photoview.PhotoView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.subhrajyoti.wallify.background.SaveWallpaperTask;
 import com.subhrajyoti.wallify.background.SetWallpaperTask;
 import com.subhrajyoti.wallify.gallery.DownloadsGalleryActivity;
 import com.subhrajyoti.wallify.model.SaveWallpaperAsyncModel;
-import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.polaric.colorful.CActivity;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
@@ -68,8 +63,6 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     private Bitmap oldWallpaper;
     private SetWallpaperTask setWallpaperTask;
     private boolean isNew = false;
-    private Uri tempUri;
-    private Target target;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +93,12 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
             loadImage();
         randomFab.setOnClickListener(v -> loadImage());
         setFab.setOnClickListener(v -> {
-            //setWallpaper();
-            startCrop();
+            try {
+                setWallpaper();
+            } catch (ExecutionException | InterruptedException e) {
+                Utils.Toaster(R.string.wallpaper_set_error);
+                e.printStackTrace();
+            }
         });
 
 
@@ -136,41 +133,32 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     public void loadImage() {
         isNew = true;
         progressBar.setVisibility(View.VISIBLE);
-        imageView.setVisibility(View.GONE);
         String string;
         grayscale = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("grayscale", false);
         if (!grayscale)
             string = getString(R.string.normal_link);
         else
             string = getString(R.string.grayscale_link);
-        target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bmp, Picasso.LoadedFrom from) {
-                bitmap = bmp;
-                progressBar.setVisibility(View.GONE);
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setImageBitmap(bitmap);
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
         Picasso.with(this)
                 .load(string)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
-                .into(target);
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
 
     }
 
     public void saveImage() throws ExecutionException, InterruptedException {
+        generateCache();
         if (!isNew) {
             return;
         }
@@ -183,6 +171,8 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     }
 
     public void setWallpaper() throws ExecutionException, InterruptedException {
+        generateCache();
+
         if (setWallpaperTask != null)
             setWallpaperTask.cancel(true);
 
@@ -196,6 +186,7 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
             Utils.Toaster(R.string.wallpaper_set_error);
         SaveWallpaperAsyncModel saveWallpaperAsyncModel = new SaveWallpaperAsyncModel(oldWallpaper, true);
         (new SaveWallpaperTask()).execute(saveWallpaperAsyncModel);
+
     }
 
     public void restoreWallpaper() throws ExecutionException, InterruptedException {
@@ -210,11 +201,10 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
         }
     }
 
-    private void startCrop() {
-        String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), bitmap, "Title", null);
-        tempUri = Uri.parse(path);
-        CropImage.activity(tempUri).start(this);
-
+    private void generateCache() {
+        imageView.destroyDrawingCache();
+        imageView.buildDrawingCache();
+        bitmap = imageView.getDrawingCache();
     }
 
     private boolean isStorageGranted() {
@@ -302,33 +292,6 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    getContentResolver().delete(tempUri, null, null);
-                    setWallpaper();
-                    File file = new File(resultUri.getPath());
-                    boolean delete = file.delete();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                result.getError().printStackTrace();
-            }
-        }
     }
 
 }
