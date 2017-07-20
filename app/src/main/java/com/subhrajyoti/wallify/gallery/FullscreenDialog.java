@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.chrisbanes.photoview.PhotoView;
 import com.subhrajyoti.wallify.R;
 
 import java.io.File;
@@ -102,7 +101,7 @@ public class FullscreenDialog extends DialogFragment {
     public class MyViewPagerAdapter extends PagerAdapter {
 
         @BindView(R.id.imageView)
-        PhotoView imageView;
+        ImageView imageView;
         private LayoutInflater layoutInflater;
 
         MyViewPagerAdapter() {
