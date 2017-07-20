@@ -116,6 +116,7 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
                 Utils.Toaster(R.string.wallpaper_set_error);
                 e.printStackTrace();
             }
+            animateFab();
         });
         saveFab.setOnClickListener(view -> {
             try {
@@ -123,6 +124,7 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
+            animateFab();
         });
 
     }
