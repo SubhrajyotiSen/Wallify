@@ -40,7 +40,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:contentDescription="@string/random_fab"
-            android:src="@drawable/ic_refresh_white_24dp" />
+            android:src="@drawable/ic_refresh" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/setFab"
@@ -49,7 +49,7 @@
             android:layout_gravity="bottom|start"
             android:layout_margin="@dimen/fab_margin"
             android:contentDescription="@string/set_fab"
-            android:src="@drawable/ic_wallpaper_white_24dp" />
+            android:src="@drawable/ic_wallpaper" />
 
     </android.support.design.widget.CoordinatorLayout>
 
