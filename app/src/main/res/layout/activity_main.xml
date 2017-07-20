@@ -34,22 +34,37 @@
         <include layout="@layout/content_main" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/randomFab"
+            android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:contentDescription="@string/random_fab"
-            android:src="@drawable/ic_refresh" />
+            android:src="@drawable/ic_add" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/setFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="90dp"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
             android:contentDescription="@string/set_fab"
-            android:src="@drawable/ic_wallpaper" />
+            android:src="@drawable/ic_wallpaper"
+            android:visibility="invisible" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/saveFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="160dp"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:contentDescription="@string/set_fab"
+            android:src="@drawable/ic_save"
+            android:visibility="invisible" />
 
     </android.support.design.widget.CoordinatorLayout>
 

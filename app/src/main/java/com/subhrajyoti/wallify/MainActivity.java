@@ -18,9 +18,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -53,16 +54,20 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     DrawerLayout drawerLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.randomFab)
-    FloatingActionButton randomFab;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     @BindView(R.id.setFab)
     FloatingActionButton setFab;
+    @BindView(R.id.saveFab)
+    FloatingActionButton saveFab;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+    private Animation fabClose, fabOpen, rotateBackward, rotateForward;
     private Bitmap bitmap;
     private Bitmap oldWallpaper;
     private SetWallpaperTask setWallpaperTask;
     private boolean isNew = false;
+    private boolean isOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +85,11 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(this, R.anim.fab_close);
+        rotateBackward = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
+        rotateForward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
+
         if (!isStorageGranted())
             requestPermission();
         File file = new File(Utils.getBackupImagePath());
@@ -91,7 +101,14 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
 
         if ((savedInstanceState == null))
             loadImage();
-        randomFab.setOnClickListener(v -> loadImage());
+
+        imageView.setOnClickListener(view -> {
+            loadImage();
+            if (isOpen)
+                animateFab();
+        });
+
+        fab.setOnClickListener(view -> animateFab());
         setFab.setOnClickListener(v -> {
             try {
                 setWallpaper();
@@ -100,34 +117,14 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
                 e.printStackTrace();
             }
         });
+        saveFab.setOnClickListener(view -> {
+            try {
+                saveImage();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
 
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.action_save:
-                try {
-                    saveImage();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                break;
-
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void loadImage() {
@@ -214,6 +211,23 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     private void requestPermission() {
         final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
         ActivityCompat.requestPermissions(this, permissions, REQUEST_STORAGE_PERM);
+    }
+
+    private void animateFab() {
+        if (isOpen) {
+            fab.startAnimation(rotateBackward);
+            saveFab.startAnimation(fabClose);
+            setFab.startAnimation(fabClose);
+            saveFab.setClickable(false);
+            setFab.setClickable(false);
+        } else {
+            fab.startAnimation(rotateForward);
+            saveFab.startAnimation(fabOpen);
+            setFab.startAnimation(fabOpen);
+            saveFab.setClickable(true);
+            setFab.setClickable(true);
+        }
+        isOpen = !isOpen;
     }
 
     @Override
