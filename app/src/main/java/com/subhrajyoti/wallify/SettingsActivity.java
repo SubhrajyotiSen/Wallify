@@ -24,6 +24,7 @@ public class SettingsActivity extends CActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
+        assert toolbar != null;
         toolbar.setTitle(getString(R.string.settings));
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;

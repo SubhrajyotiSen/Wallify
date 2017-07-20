@@ -3,14 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.github.chrisbanes.photoview.PhotoView
+    <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:adjustViewBounds="true"
         android:contentDescription="@string/main_wallpaper"
-        android:scaleType="fitCenter" />
+        android:scaleType="centerCrop" />
 
     <ProgressBar
         android:id="@+id/progressBar"
