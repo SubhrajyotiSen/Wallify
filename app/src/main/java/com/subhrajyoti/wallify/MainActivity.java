@@ -1,7 +1,6 @@
 package com.subhrajyoti.wallify;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,6 +24,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -89,6 +90,21 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
         fabClose = AnimationUtils.loadAnimation(this, R.anim.fab_close);
         rotateBackward = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
         rotateForward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
+
+        if (Utils.isFirstRun(this))
+            new TapTargetSequence(this)
+                    .targets(
+                            TapTarget
+                                    .forView(findViewById(R.id.fab), "Click here to download or set Wallpaper")
+                                    .outerCircleAlpha(0.7f)
+                                    .transparentTarget(true)
+                                    .cancelable(false),
+                            TapTarget
+                                    .forView(findViewById(R.id.imageView), "Click anywhere on the image to load a new Wallpaper")
+                                    .outerCircleAlpha(0.7f)
+                                    .transparentTarget(true)
+                    )
+                    .start();
 
         File file = new File(Utils.getBackupImagePath());
         if (file.exists()) {
