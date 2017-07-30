@@ -90,8 +90,6 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
         rotateBackward = AnimationUtils.loadAnimation(this, R.anim.rotate_backward);
         rotateForward = AnimationUtils.loadAnimation(this, R.anim.rotate_forward);
 
-        if (!isStorageGranted())
-            requestPermission();
         File file = new File(Utils.getBackupImagePath());
         if (file.exists()) {
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -157,16 +155,20 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
     }
 
     public void saveImage() throws ExecutionException, InterruptedException {
-        generateCache();
-        if (!isNew) {
-            return;
+        if (!isStorageGranted())
+            requestPermission();
+        else {
+            generateCache();
+            if (!isNew) {
+                return;
+            }
+            boolean status = new SaveWallpaperTask().execute(new SaveWallpaperAsyncModel(bitmap, false)).get();
+            if (status)
+                Utils.Toaster(R.string.wallpaper_save_success);
+            else
+                Utils.Toaster(R.string.wallpaper_save_error);
+            isNew = false;
         }
-        boolean status = new SaveWallpaperTask().execute(new SaveWallpaperAsyncModel(bitmap, false)).get();
-        if (status)
-            Utils.Toaster(R.string.wallpaper_save_success);
-        else
-            Utils.Toaster(R.string.wallpaper_save_error);
-        isNew = false;
     }
 
     public void setWallpaper() throws ExecutionException, InterruptedException {
@@ -239,15 +241,20 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
             return;
         }
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            try {
+                saveImage();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return;
         }
-
-        DialogInterface.OnClickListener listener = (dialog, id) -> finish();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.app_name))
                 .setMessage(R.string.no_permission)
-                .setPositiveButton(getString(android.R.string.ok), listener)
+                .setPositiveButton(getString(android.R.string.ok), null)
                 .show();
     }
 
