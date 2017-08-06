@@ -1,8 +1,12 @@
 package com.subhrajyoti.wallify.gallery;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,6 +28,7 @@ import butterknife.ButterKnife;
 
 public class DownloadsGalleryActivity extends CActivity {
 
+    final private int REQUEST_STORAGE_PERM = 11;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.recyclerView)
@@ -57,8 +62,10 @@ public class DownloadsGalleryActivity extends CActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        loadImages();
-
+        if (!isStorageGranted())
+            requestPermission();
+        else
+            loadImages();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -105,6 +112,7 @@ public class DownloadsGalleryActivity extends CActivity {
             }
         }));
 
+
     }
 
     private void loadImages() {
@@ -116,4 +124,32 @@ public class DownloadsGalleryActivity extends CActivity {
         }
         recyclerViewAdapter.notifyDataSetChanged();
     }
+
+    private boolean isStorageGranted() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_STORAGE_PERM);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode != REQUEST_STORAGE_PERM) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
+        }
+        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            loadImages();
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.app_name))
+                .setMessage(R.string.no_permission)
+                .setPositiveButton(getString(android.R.string.ok), (dialogInterface, i) -> requestPermission())
+                .show();
+    }
+
 }
