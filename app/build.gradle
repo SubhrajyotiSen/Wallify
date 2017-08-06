@@ -9,12 +9,12 @@ android {
             storePassword 'password'
         }
     }
-    compileSdkVersion 25
-    buildToolsVersion "26.0.0"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.subhrajyoti.wallify"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -41,8 +41,8 @@ allprojects {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.0.0'
+    compile 'com.android.support:design:26.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.garretyoder:Colorful:1.1'
     compile 'com.jakewharton:butterknife:8.5.1'
