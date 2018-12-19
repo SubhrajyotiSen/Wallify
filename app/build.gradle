@@ -9,12 +9,12 @@ android {
             storePassword 'password'
         }
     }
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.subhrajyoti.wallify"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -40,14 +40,13 @@ allprojects {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:26.0.0'
-    compile 'com.android.support:design:26.0.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.github.garretyoder:Colorful:1.1'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile 'com.getkeepsafe.taptargetview:taptargetview:1.9.1'
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.garretyoder:Colorful:1.1'
+    implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.9.1'
+    testImplementation 'junit:junit:4.12'
 }
-apply plugin: 'me.tatarka.retrolambda'

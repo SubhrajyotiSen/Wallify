@@ -6,7 +6,7 @@
     <string name="github">GitHub</string>
     <string name="github_link">https://github.com/SubhrajyotiSen/Wallify</string>
     <string name="no_permission">External Storage permission not granted</string>
-    <string name="normal_link">https://unsplash.it/1920/1080/?random</string>
+    <string name="normal_link">https://picsum.photos/1920/1080/?random</string>
     <string name="grayscale_link">https://unsplash.it/g/1920/1080/?random</string>
     <string name="wallpaper_save_error">Error while saving wallpaper</string>
     <string name="wallpaper_save_success">Wallpaper Saved</string>
