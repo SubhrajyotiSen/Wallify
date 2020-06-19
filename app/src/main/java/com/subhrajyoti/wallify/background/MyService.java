@@ -14,6 +14,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.subhrajyoti.wallify.R;
+import com.subhrajyoti.wallify.UrlConstants;
 
 import java.util.concurrent.ExecutionException;
 
@@ -29,9 +30,9 @@ public class MyService extends Service {
         String url;
         boolean grayscale = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("grayscale", false);
         if (grayscale)
-            url = getString(R.string.grayscale_link);
+            url = UrlConstants.GRAYSCALE_URL;
         else
-            url = getString(R.string.normal_link);
+            url = UrlConstants.NORMAL_URL;
         mTarget = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {

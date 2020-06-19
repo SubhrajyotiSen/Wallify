@@ -149,9 +149,9 @@ public class MainActivity extends CActivity implements NavigationView.OnNavigati
         String string;
         grayscale = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("grayscale", false);
         if (!grayscale)
-            string = getString(R.string.normal_link);
+            string = UrlConstants.NORMAL_URL;
         else
-            string = getString(R.string.grayscale_link);
+            string = UrlConstants.GRAYSCALE_URL;
         Picasso.with(this)
                 .load(string)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
