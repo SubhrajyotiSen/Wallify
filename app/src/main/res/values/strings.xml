@@ -35,5 +35,6 @@
     <string name="yes">Yes</string>
     <string name="image_delete_confirm">Image deleted</string>
     <string name="image_delete_error">Error while deleting image</string>
+    <string name="ok">OK</string>
 
 </resources>

@@ -21,6 +21,8 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_fav" />
+    <include
+        android:id="@+id/included_layout"
+        layout="@layout/content_fav" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
